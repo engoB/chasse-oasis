@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE HUNT — Oasis ARG Infinite Streaming</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #08080a;
+            --bg-secondary: #101014;
+            --bg-card: rgba(18, 18, 24, 0.85);
+            --red-netflix: #E50914;
+            --gold-accent: #f59e0b;
+            --gold-glow: rgba(245, 158, 11, 0.5);
+            --green-success: #10b981;
+            --blue-cyan: #06b6d4;
+            --text-main: #ffffff;
+            --text-sub: #9ca3af;
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font-family); }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* HEADER */
+        header {
+            position: fixed; top: 0; width: 100%; height: 68px; padding: 0 4%;
+            display: flex; align-items: center; justify-content: space-between;
+            background: rgba(8, 8, 10, 0.92); backdrop-filter: blur(20px);
+            z-index: 1000; border-bottom: 1px solid var(--border-glass); gap: 15px;
+        }
+
+        .logo { font-size: 1.6rem; font-weight: 900; color: var(--red-netflix); letter-spacing: 2px; text-decoration: none; flex-shrink: 0; }
+        .logo span { color: var(--gold-accent); font-size: 0.75rem; vertical-align: super; font-weight: 800; text-transform: uppercase; }
+
+        .search-container { position: relative; flex: 1; max-width: 400px; }
+        .search-input {
+            width: 100%; background: rgba(255,255,255,0.06); border: 1px solid var(--border-glass);
+            border-radius: 20px; padding: 8px 16px 8px 38px; color: #fff; font-size: 0.85rem; outline: none; transition: all 0.3s;
+        }
+        .search-input:focus { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.3); }
+        .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-sub); font-size: 0.85rem; }
+
+        .header-actions { display: flex; align-items: center; gap: 10px; }
+
+        .btn-header {
+            background: rgba(255,255,255,0.08); border: 1px solid var(--border-glass);
+            color: #fff; padding: 8px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 700;
+            cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s;
+        }
+        .btn-header:hover { background: rgba(255,255,255,0.18); }
+
+        .btn-journal {
+            background: linear-gradient(45deg, var(--gold-accent), #d97706);
+            color: #000; border: none; padding: 8px 16px; border-radius: 20px;
+            font-size: 0.8rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 6px;
+            box-shadow: 0 0 15px var(--gold-glow); transition: transform 0.2s;
+        }
+        .btn-journal:hover { transform: scale(1.05); }
+
+        /* HUD TOP BAR COMPACT */
+        .hud-top-bar {
+            margin-top: 68px; padding: 10px 4%;
+            background: linear-gradient(90deg, rgba(22, 16, 8, 0.95) 0%, rgba(8, 8, 10, 0.98) 100%);
+            border-bottom: 1px solid var(--border-glass);
+            display: flex; align-items: center; justify-content: space-between; gap: 15px; flex-wrap: wrap;
+        }
+
+        .hud-info { display: flex; align-items: center; gap: 10px; }
+        .hud-badge-arc {
+            background: rgba(245, 158, 11, 0.2); border: 1px solid var(--gold-accent);
+            color: var(--gold-accent); font-size: 0.7rem; font-weight: 800; padding: 3px 8px; border-radius: 10px; text-transform: uppercase;
+        }
+        .hud-timer { font-size: 0.85rem; font-family: monospace; font-weight: 800; color: var(--gold-accent); background: rgba(0,0,0,0.4); padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(245,158,11,0.3); }
+
+        .keys-mini-grid { display: flex; align-items: center; gap: 8px; }
+        .key-chip {
+            background: rgba(0,0,0,0.6); border: 1px solid var(--border-glass);
+            padding: 5px 10px; border-radius: 8px; display: flex; align-items: center; gap: 6px;
+            font-size: 0.75rem; font-weight: 700; transition: all 0.3s; cursor: pointer;
+        }
+        .key-chip.active { border-color: var(--gold-accent); background: rgba(245, 158, 11, 0.15); box-shadow: 0 0 10px var(--gold-glow); }
+        .key-chip.unlocked { border-color: var(--green-success); background: rgba(16, 185, 129, 0.15); color: var(--green-success); }
+
+        /* CATEGORY PILLS */
+        .category-pills { padding: 14px 4% 0 4%; display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; }
+        .category-pills::-webkit-scrollbar { display: none; }
+        .pill {
+            background: rgba(255,255,255,0.05); border: 1px solid var(--border-glass);
+            color: var(--text-sub); padding: 6px 16px; border-radius: 20px; font-size: 0.8rem;
+            font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.3s;
+        }
+        .pill:hover, .pill.active { background: var(--text-main); color: #000; font-weight: 700; }
+
+        /* HERO BILLBOARD */
+        .hero {
+            position: relative; height: 48vh; width: 100%; margin-top: 10px;
+            background-size: cover; background-position: center top;
+            display: flex; align-items: flex-end; padding: 0 4% 35px 4%;
+            transition: background-image 0.8s ease-in-out;
+        }
+        .hero-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(180deg, rgba(8,8,10,0.2) 0%, rgba(8,8,10,0.85) 80%, var(--bg-primary) 100%),
+                        linear-gradient(90deg, rgba(8,8,10,0.9) 0%, transparent 60%);
+        }
+        .hero-content { position: relative; z-index: 2; max-width: 580px; }
+        .hero-title { font-size: 2.3rem; font-weight: 900; line-height: 1.1; margin-bottom: 8px; text-shadow: 0 4px 20px rgba(0,0,0,0.9); }
+        .hero-desc { font-size: 0.85rem; color: #d1d5db; line-height: 1.5; margin-bottom: 16px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .btn-action {
+            display: inline-flex; align-items: center; gap: 8px; padding: 9px 20px; border-radius: 6px;
+            font-weight: 700; font-size: 0.85rem; cursor: pointer; border: none; background: var(--text-main); color: #000; transition: transform 0.2s;
+        }
+        .btn-action:hover { transform: translateY(-2px); }
+
+        /* CATALOG CAROUSEL */
+        .catalog { padding: 15px 4% 60px 4%; }
+        .row-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; margin-top: 25px; }
+        .row-title { font-size: 1.15rem; font-weight: 800; }
+
+        .carousel-wrapper { position: relative; }
+        .carousel-arrow {
+            position: absolute; top: 50%; transform: translateY(-50%); z-index: 30;
+            width: 38px; height: 100%; background: rgba(0,0,0,0.75); border: none;
+            color: #fff; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
+            opacity: 0; transition: opacity 0.3s;
+        }
+        .carousel-wrapper:hover .carousel-arrow { opacity: 1; }
+        .carousel-arrow:hover { color: var(--gold-accent); background: rgba(0,0,0,0.95); }
+        .carousel-arrow.left { left: -10px; border-radius: 0 8px 8px 0; }
+        .carousel-arrow.right { right: -10px; border-radius: 8px 0 0 8px; }
+
+        .row-carousel { display: flex; gap: 12px; overflow-x: auto; padding: 10px 0; scrollbar-width: none; scroll-behavior: smooth; }
+        .row-carousel::-webkit-scrollbar { display: none; }
+
+        .media-card {
+            min-width: 170px; height: 250px; background: var(--bg-secondary);
+            border-radius: 8px; position: relative; cursor: pointer; flex-shrink: 0;
+            transition: all 0.35s cubic-bezier(0.165, 0.84, 0.44, 1); overflow: hidden;
+            border: 1px solid var(--border-glass);
+        }
+        .media-card:hover { transform: scale(1.06) translateY(-4px); z-index: 20; box-shadow: 0 16px 32px rgba(0,0,0,0.8); }
+        .media-poster { width: 100%; height: 100%; object-fit: cover; }
+        .media-card-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(0deg, rgba(8,8,10,0.95) 0%, transparent 70%);
+            display: flex; flex-direction: column; justify-content: flex-end; padding: 10px;
+        }
+        .media-title { font-size: 0.82rem; font-weight: 700; margin-bottom: 2px; }
+        .media-meta { font-size: 0.7rem; color: var(--text-sub); display: flex; gap: 6px; }
+
+        /* ALL MODALS - PROPER POSITIONING & EASY EXIT */
+        .modal-backdrop {
+            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.88); backdrop-filter: blur(16px);
+            display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px;
+        }
+
+        /* PROPER CLOSE BUTTON STYLING (ALWAYS VISIBLE & EASY TO CLICK) */
+        .modal-close-btn {
+            position: absolute; top: 16px; right: 16px; width: 38px; height: 38px;
+            border-radius: 50%; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25);
+            color: #fff; font-size: 1.2rem; cursor: pointer; z-index: 100;
+            display: flex; align-items: center; justify-content: center; transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        }
+        .modal-close-btn:hover { background: var(--red-netflix); border-color: var(--red-netflix); transform: scale(1.1); }
+
+        .modal-card {
+            background: #101014; border: 1px solid var(--border-glass); border-radius: 16px;
+            width: 100%; max-width: 820px; max-height: 90vh; overflow-y: auto; position: relative;
+        }
+
+        .modal-nav-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 20px; background: rgba(0,0,0,0.6); border-bottom: 1px solid var(--border-glass);
+        }
+        .btn-modal-back {
+            background: rgba(255,255,255,0.1); border: 1px solid var(--border-glass); color: #fff;
+            padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; cursor: pointer;
+            display: flex; align-items: center; gap: 6px; transition: all 0.2s;
+        }
+        .btn-modal-back:hover { background: rgba(255,255,255,0.25); }
+
+        .modal-hero {
+            height: 260px; background-size: cover; background-position: center;
+            position: relative; display: flex; align-items: flex-end; padding: 20px;
+        }
+        .modal-hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, #101014 0%, transparent 80%); }
+
+        .modal-body { padding: 22px; }
+        .modal-title { font-size: 1.8rem; font-weight: 900; position: relative; z-index: 2; }
+        .modal-info-bar { display: flex; gap: 12px; font-size: 0.8rem; color: var(--text-sub); margin-top: 4px; }
+        .match-score { color: var(--green-success); font-weight: 800; }
+        .modal-overview { font-size: 0.88rem; color: #d1d5db; line-height: 1.6; margin-top: 14px; margin-bottom: 16px; }
+        .cast-list { font-size: 0.8rem; color: var(--text-sub); margin-bottom: 16px; }
+        .cast-list strong { color: #fff; }
+
+        /* PUZZLE & UNLOCK ANIMATIONS */
+        .puzzle-box {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(20, 20, 24, 0.9) 100%);
+            border: 2px solid var(--gold-accent); border-radius: 12px; padding: 20px; margin-top: 20px;
+            box-shadow: 0 0 35px var(--gold-glow); animation: unlockFlash 0.8s ease-out;
+        }
+        @keyframes unlockFlash {
+            0% { transform: scale(0.92); opacity: 0; box-shadow: 0 0 80px var(--gold-accent); }
+            50% { transform: scale(1.03); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+
+        .puzzle-prompt { font-size: 0.88rem; font-weight: 700; color: var(--gold-accent); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .puzzle-input-group { display: flex; gap: 10px; }
+        .puzzle-input {
+            flex: 1; background: #0a0a0c; border: 1px solid var(--border-glass); color: #fff;
+            padding: 10px 14px; border-radius: 8px; font-size: 0.88rem; outline: none;
+        }
+
+        /* RECOMMANDATIONS IN-MODAL */
+        .modal-similar-section { margin-top: 25px; border-top: 1px solid var(--border-glass); padding-top: 16px; }
+        .modal-similar-title { font-size: 0.95rem; font-weight: 800; margin-bottom: 12px; color: #fff; display: flex; align-items: center; gap: 8px; }
+        .modal-similar-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
+        .sim-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border-glass); border-radius: 6px; overflow: hidden; cursor: pointer; transition: transform 0.2s; }
+        .sim-card:hover { transform: translateY(-3px); border-color: rgba(255,255,255,0.3); }
+        .sim-poster { width: 100%; height: 140px; object-fit: cover; }
+        .sim-info { padding: 6px; }
+        .sim-title { font-size: 0.72rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        /* CARNET D'ENQUÊTE MODAL (FULL QUEST ROADMAP) */
+        .journal-modal {
+            background: #141218; border: 2px solid var(--gold-accent); border-radius: 16px;
+            width: 100%; max-width: 680px; padding: 28px; position: relative; box-shadow: 0 0 40px var(--gold-glow);
+            max-height: 85vh; overflow-y: auto;
+        }
+        .journal-header-area { display: flex; justify-content: space-between; align-items: center; padding-right: 40px; margin-bottom: 15px; }
+        .journal-title { font-size: 1.5rem; font-weight: 900; color: var(--gold-accent); display: flex; align-items: center; gap: 10px; }
+        
+        .quest-tree { display: flex; flex-direction: column; gap: 14px; margin: 20px 0; }
+        .quest-node {
+            background: rgba(0,0,0,0.5); border: 1px solid var(--border-glass);
+            border-radius: 10px; padding: 16px; transition: all 0.3s;
+        }
+        .quest-node.active { border-color: var(--gold-accent); background: rgba(245, 158, 11, 0.08); box-shadow: 0 0 15px var(--gold-glow); }
+        .quest-node.completed { border-color: var(--green-success); background: rgba(16, 185, 129, 0.08); }
+        .quest-node-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .quest-node-title { font-weight: 800; font-size: 0.95rem; display: flex; align-items: center; gap: 8px; }
+        .quest-node-status { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; padding: 3px 8px; border-radius: 10px; }
+        .quest-node.active .quest-node-status { background: rgba(245,158,11,0.2); color: var(--gold-accent); }
+        .quest-node.completed .quest-node-status { background: rgba(16,185,129,0.2); color: var(--green-success); }
+        .quest-node.locked .quest-node-status { background: rgba(255,255,255,0.1); color: var(--text-sub); }
+        .quest-node-body { font-size: 0.85rem; color: #d1d5db; line-height: 1.5; }
+
+        /* LEADERBOARD MODAL */
+        .lb-modal {
+            background: #101014; border: 1px solid var(--gold-accent); border-radius: 16px;
+            width: 100%; max-width: 650px; padding: 28px; position: relative; box-shadow: 0 0 40px rgba(0,0,0,0.9);
+        }
+        .lb-title-header { font-size: 1.4rem; font-weight: 900; color: #fff; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; padding-right: 40px; }
+        .lb-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .lb-table th { text-align: left; padding: 10px; font-size: 0.75rem; color: var(--text-sub); text-transform: uppercase; border-bottom: 1px solid var(--border-glass); }
+        .lb-table td { padding: 12px 10px; font-size: 0.85rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .lb-rank-num { font-weight: 900; color: var(--gold-accent); }
+        .badge-pass { background: rgba(6, 182, 212, 0.2); color: var(--blue-cyan); border: 1px solid var(--blue-cyan); font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; font-weight: 800; }
+
+        .golden-egg-trigger {
+            display: inline-block; cursor: pointer; font-size: 1.5rem; margin-left: 8px; vertical-align: middle;
+            animation: pulseEgg 1.5s infinite alternate;
+        }
+        @keyframes pulseEgg { from { transform: scale(1); filter: drop-shadow(0 0 5px var(--gold-accent)); } to { transform: scale(1.3); filter: drop-shadow(0 0 20px var(--gold-accent)); } }
+
+        footer { text-align: center; padding: 30px; color: var(--text-sub); font-size: 0.8rem; border-top: 1px solid var(--border-glass); }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <a href="#" class="logo">THE HUNT <span>OASIS</span></a>
+        
+        <div class="search-container">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="searchInput" class="search-input" placeholder="Rechercher un film, une série..." oninput="handleSearch()">
+        </div>
+
+        <div class="header-actions">
+            <button class="btn-header" onclick="openLeaderboardModal()">
+                <i class="fa-solid fa-trophy" style="color: var(--gold-accent);"></i> Classement
+            </button>
+            <button class="btn-journal" onclick="openJournalModal()">
+                <i class="fa-solid fa-book-bookmark"></i> Carnet d'Enquête
+            </button>
+        </div>
+    </header>
+
+    <!-- HUD COMPACT TOP BAR WITH LIVE TIMER -->
+    <div class="hud-top-bar">
+        <div class="hud-info">
+            <span class="hud-badge-arc"><i class="fa-solid fa-trophy"></i> Arc 1</span>
+            <span class="hud-title-text" id="hudSeasonTitle">L'Héritage d'Halliday</span>
+            <span class="hud-timer" id="liveTimer">00:00:00</span>
+        </div>
+
+        <div class="keys-mini-grid">
+            <div class="key-chip active" id="chipKey1" onclick="openJournalModal()">
+                <span>🗝️</span> <div><div>Cuivre</div><div class="key-chip-status" id="chipLabel1">Active</div></div>
+            </div>
+            <div class="key-chip" id="chipKey2" onclick="openJournalModal()">
+                <span>🔑</span> <div><div>Jade</div><div class="key-chip-status" id="chipLabel2">🔒</div></div>
+            </div>
+            <div class="key-chip" id="chipKey3" onclick="openJournalModal()">
+                <span>💎</span> <div><div>Cristal</div><div class="key-chip-status" id="chipLabel3">🔒</div></div>
+            </div>
+            <div class="key-chip" id="chipKeyEgg" onclick="openJournalModal()">
+                <span>🥚</span> <div><div>Œuf d'Or</div><div class="key-chip-status" id="chipLabelEgg">🔒</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CATEGORY PILLS -->
+    <div class="category-pills">
+        <button class="pill active" onclick="filterCategory('all', this)">Tous</button>
+        <button class="pill" onclick="filterCategory(878, this)">Science-Fiction</button>
+        <button class="pill" onclick="filterCategory(28, this)">Action</button>
+        <button class="pill" onclick="filterCategory(53, this)">Thriller</button>
+        <button class="pill" onclick="filterCategory(12, this)">Aventure</button>
+        <button class="pill" onclick="filterCategory(16, this)">Animation</button>
+        <button class="pill" onclick="filterCategory(18, this)">Drame</button>
+    </div>
+
+    <!-- HERO BILLBOARD -->
+    <div class="hero" id="heroBillboard">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title" id="heroTitle">Ready Player One</h1>
+            <p class="hero-desc" id="heroDesc">Naviguez à travers le catalogue. Résolvez les 3 clés séquentiellement pour faire apparaître l'Œuf d'Or caché au sein d'une fiche.</p>
+            <button class="btn-action" onclick="inspectHeroMovie()">
+                <i class="fa-solid fa-magnifying-glass"></i> Enquêter sur ce Titre
+            </button>
+        </div>
+    </div>
+
+    <!-- INFINITE STREAMING CATALOG -->
+    <div class="catalog" id="catalogContainer"></div>
+
+    <!-- CARNET D'ENQUÊTE MODAL -->
+    <div class="modal-backdrop" id="journalModalBackdrop">
+        <div class="journal-modal">
+            <button class="modal-close-btn" onclick="closeJournalModal()">&times;</button>
+            <div class="journal-header-area">
+                <div class="journal-title"><i class="fa-solid fa-compass"></i> Carnet d'Enquête</div>
+                <span style="font-size: 0.85rem; color: var(--gold-accent);" id="questProgressPct">0% Complété</span>
+            </div>
+            
+            <p style="font-size: 0.85rem; color: var(--text-sub);">
+                Vue d'ensemble de la quête. Résolvez chaque étape séquentiellement pour débloquer la suite :
+            </p>
+
+            <div class="quest-tree">
+                <div class="quest-node active" id="qNode1">
+                    <div class="quest-node-header">
+                        <div class="quest-node-title">🗝️ Étape 1 : Clé de Cuivre</div>
+                        <span class="quest-node-status" id="qStatus1">EN COURS</span>
+                    </div>
+                    <div class="quest-node-body" id="qBody1">Chargement...</div>
+                </div>
+
+                <div class="quest-node locked" id="qNode2">
+                    <div class="quest-node-header">
+                        <div class="quest-node-title">🔑 Étape 2 : Clé de Jade</div>
+                        <span class="quest-node-status" id="qStatus2">VERROUILLÉ</span>
+                    </div>
+                    <div class="quest-node-body" id="qBody2">Chargement...</div>
+                </div>
+
+                <div class="quest-node locked" id="qNode3">
+                    <div class="quest-node-header">
+                        <div class="quest-node-title">💎 Étape 3 : Clé de Cristal</div>
+                        <span class="quest-node-status" id="qStatus3">VERROUILLÉ</span>
+                    </div>
+                    <div class="quest-node-body" id="qBody3">Chargement...</div>
+                </div>
+
+                <div class="quest-node locked" id="qNode4">
+                    <div class="quest-node-header">
+                        <div class="quest-node-title">🥚 Étape Finale : L'Œuf d'Or</div>
+                        <span class="quest-node-status" id="qStatus4">VERROUILLÉ</span>
+                    </div>
+                    <div class="quest-node-body" id="qBody4">Chargement...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LEADERBOARD MODAL -->
+    <div class="modal-backdrop" id="lbModalBackdrop">
+        <div class="lb-modal">
+            <button class="modal-close-btn" onclick="closeLeaderboardModal()">&times;</button>
+            <div class="lb-title-header">
+                <span>🏆 Classement Officiel & Scores</span>
+                <span class="badge-pass"><i class="fa-solid fa-check"></i> PASS CHASSEUR ACTIF</span>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-sub);">
+                Temps écoulé : <strong id="lbUserTimer" style="color: var(--gold-accent);">00:00:00</strong> | Score actuel : <strong id="lbUserScore" style="color: var(--green-success);">10,000 pts</strong>
+            </p>
+
+            <table class="lb-table">
+                <thead>
+                    <tr>
+                        <th>Rang</th>
+                        <th>Chasseur</th>
+                        <th>Temps</th>
+                        <th>Score</th>
+                        <th>Statut</th>
+                    </tr>
+                </thead>
+                <tbody id="lbTableBody">
+                    <tr>
+                        <td class="lb-rank-num">#1</td>
+                        <td>Aiden_Oasis <span class="badge-pass">PRO</span></td>
+                        <td>00:08:14.220</td>
+                        <td>9,850 pts</td>
+                        <td>🏆 Œuf Trouvé</td>
+                    </tr>
+                    <tr>
+                        <td class="lb-rank-num">#2</td>
+                        <td>Krypton_99 <span class="badge-pass">PRO</span></td>
+                        <td>00:11:45.010</td>
+                        <td>9,620 pts</td>
+                        <td>🏆 Œuf Trouvé</td>
+                    </tr>
+                    <tr>
+                        <td class="lb-rank-num">#3</td>
+                        <td>Cypher_Matrix</td>
+                        <td>00:14:02.890</td>
+                        <td>9,410 pts</td>
+                        <td>🗝️ Clé #3</td>
+                    </tr>
+                    <tr style="background: rgba(245, 158, 11, 0.1);">
+                        <td class="lb-rank-num" id="userRankNum">#42</td>
+                        <td><strong>VOUS (Joueur)</strong></td>
+                        <td id="tdUserTimer">00:00:00</td>
+                        <td id="tdUserScore">10,000 pts</td>
+                        <td id="tdUserStep">🗝️ En cours</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- MODAL FICHE FILM -->
+    <div class="modal-backdrop" id="modalBackdrop">
+        <div class="modal-card" id="modalCard">
+            <button class="modal-close-btn" onclick="closeModal()">&times;</button>
+            <div class="modal-nav-bar">
+                <button class="btn-modal-back" id="btnModalBack" onclick="goBackModalHistory()" style="display:none;">
+                    <i class="fa-solid fa-arrow-left"></i> Titre Précédent
+                </button>
+            </div>
+            <div class="modal-hero" id="modalHero">
+                <div style="position: relative; z-index: 2;">
+                    <h2 class="modal-title" id="modalTitle">Title</h2>
+                    <div class="modal-info-bar">
+                        <span class="match-score" id="modalMatch">98% Match</span>
+                        <span id="modalYear">2026</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <p class="modal-overview" id="modalOverview"></p>
+                <div class="cast-list" id="modalCast"></div>
+                <div id="modalPuzzleArea"></div>
+
+                <div class="modal-similar-section">
+                    <div class="modal-similar-title"><i class="fa-solid fa-film"></i> Recommandations & Titres Similaires</div>
+                    <div class="modal-similar-grid" id="modalSimilarGrid"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        THE HUNT ARG Engine • TMDB Infinite Catalog • Modular Config Engine
+    </footer>
+
+    <!-- CHARGEMENT DU FICHIER DÉDIÉ DE CONFIGURATION DES ÉNIGMES -->
+    <script src="quest-config.js"></script>
+
+    <script>
+        const TMDB_API_KEY = "12ec990be5e1a68af09d09c8ca76fa57";
+
+        // FALLBACK LOCAL DATA
+        const fallbackMovies = [
+            { id: 550, title: "Fight Club (1999)", year: "1999", match: "99%", overview: "Un employé de bureau insomniaque et un fabricant de savon insouciant forment un club de combat clandestin.", backdrop: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80", poster: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=500&q=80", cast: "Brad Pitt, Edward Norton" },
+            { id: 603, title: "The Matrix (1999 - Vol. 1)", year: "1999", match: "98%", overview: "Un pirate informatique apprend par de mystérieux rebelles la vraie nature de sa réalité.", backdrop: "https://images.unsplash.com/photo-1515260268569-9271009adfdb?auto=format&fit=crop&w=1200&q=80", poster: "https://images.unsplash.com/photo-1508739773434-c26b3d09e071?auto=format&fit=crop&w=500&q=80", cast: "Keanu Reeves, Laurence Fishburne" },
+            { id: 157336, title: "Interstellar (2014)", year: "2014", match: "97%", overview: "Une équipe d'explorateurs voyage à travers un trou de ver dans l'espace.", backdrop: "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=1200&q=80", poster: "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=500&q=80", cast: "Matthew McConaughey, Anne Hathaway" },
+            { id: 27205, title: "Inception (2010)", year: "2010", match: "96%", overview: "Un voleur qui s'approprie des secrets d'entreprise à travers la technologie de partage de rêves.", backdrop: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1200&q=80", poster: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=500&q=80", cast: "Leonardo DiCaprio" }
+        ];
+
+        let currentStep = 1;
+        let heroMovie = fallbackMovies[0];
+        let searchTimeout = null;
+        let loadedCategoriesCount = 0;
+        let startTime = Date.now();
+        let modalHistoryStack = [];
+
+        const CATEGORIES_CONFIG = [
+            { title: "🍿 Tendances Mondiales du Cinéma", endpoint: "trending/movie/week" },
+            { title: "🔥 Top 10 Chef-d'Œuvres Incontournables", endpoint: "movie/top_rated" },
+            { title: "🚀 Science-Fiction & Cyberpunk", endpoint: "discover/movie?with_genres=878" },
+            { title: "💥 Blockbusters d'Action", endpoint: "discover/movie?with_genres=28" },
+            { title: "🇫🇷 Le Meilleur du Cinéma Français", endpoint: "discover/movie?with_original_language=fr" },
+            { title: "🕵️ Thrillers & Suspens Psychologique", endpoint: "discover/movie?with_genres=53" },
+            { title: "🌍 Films d'Aventure & Exploration", endpoint: "discover/movie?with_genres=12" },
+            { title: "⛩️ Animation & Mangas CULTES", endpoint: "discover/movie?with_genres=16" },
+            { title: "📺 Séries TV Populaires du Moment", endpoint: "tv/popular" },
+            { title: "🌌 Sagas & Espionnage", endpoint: "discover/movie?with_genres=878,28" },
+            { title: "🎬 Comédies CULTES", endpoint: "discover/movie?with_genres=35" }
+        ];
+
+        // CLOSE MODALS ON BACKDROP CLICK OR ESC
+        document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
+            backdrop.addEventListener('click', (e) => {
+                if(e.target === backdrop) {
+                    backdrop.style.display = 'none';
+                }
+            });
+        });
+        document.addEventListener('keydown', (e) => {
+            if(e.key === 'Escape') {
+                document.querySelectorAll('.modal-backdrop').forEach(b => b.style.display = 'none');
+            }
+        });
+
+        // LIVE TIMER
+        setInterval(() => {
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            const hrs = String(Math.floor(elapsed / 3600)).padStart(2, '0');
+            const mins = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
+            const secs = String(elapsed % 60).padStart(2, '0');
+            const formatted = `${hrs}:${mins}:${secs}`;
+            document.getElementById('liveTimer').innerText = formatted;
+            document.getElementById('lbUserTimer').innerText = formatted;
+            document.getElementById('tdUserTimer').innerText = formatted;
+        }, 1000);
+
+        async function fetchTMDB(endpoint) {
+            try {
+                const res = await fetch(`https://api.themoviedb.org/3/${endpoint}${endpoint.includes('?') ? '&' : '?'}api_key=${TMDB_API_KEY}&language=fr-FR`);
+                if(!res.ok) throw new Error("API Error");
+                const data = await res.json();
+                return data.results || data;
+            } catch(e) { return null; }
+        }
+
+        async function initCatalog() {
+            if(window.QUEST_CONFIG && window.QUEST_CONFIG.seasonTitle) {
+                document.getElementById('hudSeasonTitle').innerText = window.QUEST_CONFIG.seasonTitle;
+            }
+
+            document.getElementById('catalogContainer').innerHTML = '';
+            loadedCategoriesCount = 0;
+            for(let i = 0; i < 4; i++) {
+                await loadNextCategoryRow();
+            }
+        }
+
+        async function loadNextCategoryRow() {
+            const configIndex = loadedCategoriesCount % CATEGORIES_CONFIG.length;
+            const pageOffset = Math.floor(loadedCategoriesCount / CATEGORIES_CONFIG.length) + 1;
+            const config = CATEGORIES_CONFIG[configIndex];
+            loadedCategoriesCount++;
+
+            let endpoint = config.endpoint;
+            if(!endpoint.includes('page=')) {
+                endpoint += (endpoint.includes('?') ? '&' : '?') + `page=${pageOffset}`;
+            }
+
+            let data = await fetchTMDB(endpoint);
+            let movies = fallbackMovies;
+            
+            // FALLBACK TO DISCOVERY IF PAGE IS EMPTY TO PREVENT EMPTY ROWS (FIXES BUGS)
+            if(!data || data.length === 0) {
+                data = await fetchTMDB(`discover/movie?sort_by=popularity.desc&page=${pageOffset}`);
+            }
+
+            if(data && data.length > 0) {
+                movies = mapTMDBResults(data);
+            }
+
+            if(loadedCategoriesCount === 1) {
+                heroMovie = movies[0];
+                updateHero(heroMovie);
+            }
+
+            createCarouselRow(`${config.title} ${pageOffset > 1 ? '(Vol. ' + pageOffset + ')' : ''}`, movies, `carousel_row_${loadedCategoriesCount}`);
+        }
+
+        function createCarouselRow(title, movies, carouselId) {
+            if(!movies || movies.length === 0) return; // Never render empty title!
+
+            const catalog = document.getElementById('catalogContainer');
+            const rowHeader = document.createElement('div');
+            rowHeader.className = 'row-header';
+            rowHeader.innerHTML = `<h2 class="row-title">${title}</h2>`;
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'carousel-wrapper';
+            wrapper.innerHTML = `
+                <button class="carousel-arrow left" onclick="scrollCarousel('${carouselId}', -400)"><i class="fa-solid fa-chevron-left"></i></button>
+                <div class="row-carousel" id="${carouselId}"></div>
+                <button class="carousel-arrow right" onclick="scrollCarousel('${carouselId}', 400)"><i class="fa-solid fa-chevron-right"></i></button>
+            `;
+
+            catalog.appendChild(rowHeader);
+            catalog.appendChild(wrapper);
+
+            renderRow(carouselId, movies);
+        }
+
+        function mapTMDBResults(results) {
+            return results.filter(m => m.poster_path || m.backdrop_path).map(m => ({
+                id: m.id,
+                title: m.title || m.name,
+                year: (m.release_date || m.first_air_date || "2026").substring(0,4),
+                match: `${Math.round((m.vote_average || 8) * 10)}% Match`,
+                overview: m.overview || "Synopsis non disponible.",
+                backdrop: m.backdrop_path ? `https://image.tmdb.org/t/p/w1280${m.backdrop_path}` : fallbackMovies[0].backdrop,
+                poster: m.poster_path ? `https://image.tmdb.org/t/p/w500${m.poster_path}` : fallbackMovies[0].poster
+            }));
+        }
+
+        function updateHero(m) {
+            const heroEl = document.getElementById('heroBillboard');
+            const imgUrl = m.backdrop || fallbackMovies[0].backdrop;
+            heroEl.style.backgroundImage = `url('${imgUrl}')`;
+            document.getElementById('heroTitle').innerText = m.title;
+            document.getElementById('heroDesc').innerText = m.overview;
+        }
+
+        function renderRow(elemId, list) {
+            const container = document.getElementById(elemId);
+            if(!container) return;
+            container.innerHTML = '';
+            list.forEach(m => {
+                const card = document.createElement('div');
+                card.className = 'media-card';
+                card.innerHTML = `
+                    <img src="${m.poster}" class="media-poster" alt="${m.title}">
+                    <div class="media-card-overlay">
+                        <div class="media-title">${m.title}</div>
+                        <div class="media-meta"><span>${m.year}</span> • <span>${m.match}</span></div>
+                    </div>
+                `;
+                card.onclick = () => openModal(m, true);
+                container.appendChild(card);
+            });
+        }
+
+        function scrollCarousel(id, offset) {
+            const carousel = document.getElementById(id);
+            if(!carousel) return;
+
+            // CONTINUOUS WRAP-AROUND HORIZONTAL LOOP
+            if (offset > 0 && (carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - 10)) {
+                carousel.scrollTo({ left: 0, behavior: 'smooth' });
+            } else if (offset < 0 && carousel.scrollLeft <= 10) {
+                carousel.scrollTo({ left: carousel.scrollWidth, behavior: 'smooth' });
+            } else {
+                carousel.scrollBy({ left: offset, behavior: 'smooth' });
+            }
+        }
+
+        /* INFINITE SCROLL EVENT LISTENER */
+        window.addEventListener('scroll', () => {
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
+                loadNextCategoryRow();
+            }
+        });
+
+        /* SEARCH BAR */
+        function handleSearch() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(async () => {
+                const query = document.getElementById('searchInput').value.trim();
+                if(query.length < 2) {
+                    initCatalog();
+                    return;
+                }
+                const searchResults = await fetchTMDB(`search/movie?query=${encodeURIComponent(query)}`);
+                if(searchResults && searchResults.length > 0) {
+                    document.getElementById('catalogContainer').innerHTML = '';
+                    createCarouselRow(`🔍 Résultats pour "${query}"`, mapTMDBResults(searchResults), 'carousel_search');
+                }
+            }, 300);
+        }
+
+        /* CATEGORY FILTER PILLS */
+        async function filterCategory(genreId, pillBtn) {
+            document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+            pillBtn.classList.add('active');
+
+            if(genreId === 'all') {
+                initCatalog();
+                return;
+            }
+
+            const genreMovies = await fetchTMDB(`discover/movie?with_genres=${genreId}`);
+            if(genreMovies && genreMovies.length > 0) {
+                document.getElementById('catalogContainer').innerHTML = '';
+                createCarouselRow(`🍿 Sélection Spéciale`, mapTMDBResults(genreMovies), 'carousel_filter');
+            }
+        }
+
+        /* IN-MODAL SEAMLESS NAVIGATION WITH HISTORY STACK */
+        async function openModal(m, isNewStack = false) {
+            if(isNewStack) {
+                modalHistoryStack = [m];
+            } else {
+                modalHistoryStack.push(m);
+            }
+
+            updateModalHistoryBackButton();
+
+            document.getElementById('modalCard').scrollTop = 0;
+            document.getElementById('modalHero').style.backgroundImage = `url('${m.backdrop}')`;
+            document.getElementById('modalTitle').innerText = m.title;
+            document.getElementById('modalYear').innerText = m.year;
+            document.getElementById('modalMatch').innerText = m.match;
+
+            const targetId = window.QUEST_CONFIG.targetFilms[currentStep];
+            const isTargetFilm = (m.id === targetId || m.title.toLowerCase().includes(getFallbackTitle(targetId)));
+
+            if(currentStep === 4 && isTargetFilm) {
+                document.getElementById('modalOverview').innerHTML = m.overview + ` <span class="golden-egg-trigger" onclick="winEgg()">🥚</span>`;
+            } else {
+                document.getElementById('modalOverview').innerText = m.overview;
+            }
+
+            try {
+                const credits = await fetchTMDB(`movie/${m.id}/credits`);
+                if(credits && credits.cast) {
+                    const topCast = credits.cast.slice(0, 4).map(c => c.name).join(', ');
+                    document.getElementById('modalCast').innerHTML = `<strong>Casting :</strong> ${topCast}`;
+                }
+            } catch(e) {
+                document.getElementById('modalCast').innerHTML = m.cast ? `<strong>Casting :</strong> ${m.cast}` : '';
+            }
+
+            // PUZZLE BOX : ONLY SHOWN IF THIS IS THE EXACT TARGET FILM FOR THE CURRENT STEP
+            const pBox = document.getElementById('modalPuzzleArea');
+            pBox.innerHTML = '';
+
+            if(isTargetFilm && currentStep < 4) {
+                pBox.innerHTML = `
+                    <div class="puzzle-box">
+                        <div class="puzzle-prompt"><i class="fa-solid fa-unlock-keyhole"></i> ${window.QUEST_CONFIG.riddles[currentStep]}</div>
+                        <div class="puzzle-input-group">
+                            <input type="text" id="puzzleInput" class="puzzle-input" placeholder="Entrez la combinaison exacte..." autocomplete="off">
+                            <button class="btn-action" onclick="verifyKey()">Valider</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // SIMILAR / RECOMMENDED MOVIES IN MODAL
+            const simGrid = document.getElementById('modalSimilarGrid');
+            simGrid.innerHTML = '';
+
+            let similarData = await fetchTMDB(`movie/${m.id}/similar`);
+            let similarList = fallbackMovies;
+            if(similarData && similarData.length > 0) {
+                similarList = mapTMDBResults(similarData.slice(0, 6));
+            }
+
+            similarList.forEach(sim => {
+                const simCard = document.createElement('div');
+                simCard.className = 'sim-card';
+                simCard.innerHTML = `
+                    <img src="${sim.poster}" class="sim-poster" alt="${sim.title}">
+                    <div class="sim-info">
+                        <div class="sim-title">${sim.title}</div>
+                    </div>
+                `;
+                simCard.onclick = () => openModal(sim, false);
+                simGrid.appendChild(simCard);
+            });
+
+            document.getElementById('modalBackdrop').style.display = 'flex';
+        }
+
+        function updateModalHistoryBackButton() {
+            const btnBack = document.getElementById('btnModalBack');
+            if(modalHistoryStack.length > 1) {
+                btnBack.style.display = 'flex';
+            } else {
+                btnBack.style.display = 'none';
+            }
+        }
+
+        function goBackModalHistory() {
+            if(modalHistoryStack.length > 1) {
+                modalHistoryStack.pop();
+                const previousMovie = modalHistoryStack[modalHistoryStack.length - 1];
+                openModal(previousMovie, false);
+            }
+        }
+
+        function getFallbackTitle(id) {
+            if(id === 550) return "fight club";
+            if(id === 603) return "matrix";
+            if(id === 157336) return "interstellar";
+            if(id === 27205) return "inception";
+            return "";
+        }
+
+        function closeModal() { document.getElementById('modalBackdrop').style.display = 'none'; }
+        function inspectHeroMovie() { openModal(heroMovie, true); }
+
+        /* CARNET D'ENQUÊTE MODAL */
+        function openJournalModal() {
+            document.getElementById('questProgressPct').innerText = `${(currentStep - 1) * 25}% Complété`;
+            
+            for(let i = 1; i <= 4; i++) {
+                const node = document.getElementById(`qNode${i}`);
+                const status = document.getElementById(`qStatus${i}`);
+                const body = document.getElementById(`qBody${i}`);
+
+                if(window.QUEST_CONFIG && window.QUEST_CONFIG.preRiddles) {
+                    body.innerHTML = window.QUEST_CONFIG.preRiddles[i];
+                }
+
+                if(i < currentStep) {
+                    node.className = "quest-node completed";
+                    status.innerText = "COMPLÉTÉ ✓";
+                } else if(i === currentStep) {
+                    node.className = "quest-node active";
+                    status.innerText = "EN COURS ●";
+                } else {
+                    node.className = "quest-node locked";
+                    status.innerText = "VERROUILLÉ 🔒";
+                }
+            }
+            document.getElementById('journalModalBackdrop').style.display = 'flex';
+        }
+        function closeJournalModal() { document.getElementById('journalModalBackdrop').style.display = 'none'; }
+
+        /* LEADERBOARD MODAL */
+        function openLeaderboardModal() {
+            document.getElementById('tdUserStep').innerText = currentStep === 4 ? "🥚 Phase Œuf" : `🗝️ Clé #${currentStep}`;
+            document.getElementById('lbModalBackdrop').style.display = 'flex';
+        }
+        function closeLeaderboardModal() { document.getElementById('lbModalBackdrop').style.display = 'none'; }
+
+        async function sha256(str) {
+            const buffer = new TextEncoder().encode(str.trim().toUpperCase());
+            const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        async function verifyKey() {
+            const val = document.getElementById('puzzleInput').value;
+            const userHash = await sha256(val);
+
+            const expectedHash = window.QUEST_CONFIG.hashes[currentStep];
+
+            if(userHash === expectedHash) {
+                alert(`✨ EXCELLENT ! Clé #${currentStep} Déverrouillée !`);
+                updateProgress(currentStep);
+                currentStep++;
+                closeModal();
+                openLeaderboardModal();
+            } else {
+                alert("❌ RÉPONSE INCORRECTE. L'empreinte SHA-256 ne correspond pas. Respectez scrupuleusement la casse et le format indiqué.");
+            }
+        }
+
+        function updateProgress(step) {
+            const chip = document.getElementById(`chipKey${step}`);
+            const label = document.getElementById(`chipLabel${step}`);
+            chip.className = "key-chip unlocked";
+            label.innerText = "Obtenue ✓";
+
+            if(step < 3) {
+                const nextChip = document.getElementById(`chipKey${step+1}`);
+                const nextLabel = document.getElementById(`chipLabel${step+1}`);
+                nextChip.className = "key-chip active";
+                nextLabel.innerText = "Active ●";
+            } else {
+                const eggChip = document.getElementById('chipKeyEgg');
+                const eggLabel = document.getElementById('chipLabelEgg');
+                eggChip.className = "key-chip active";
+                eggLabel.innerText = "CACHÉ ! ✨";
+            }
+        }
+
+        function winEgg() {
+            alert("🏆 INCROYABLE ! VOUS AVEZ TROUVÉ L'ŒUF D'OR ! VOUS REMPORTEZ LA VICTOIRE DE LA SAISON !");
+            openLeaderboardModal();
+        }
+
+        initCatalog();
+    </script>
+</body>
+</html>
