@@ -418,6 +418,103 @@ table.lb tr.me td{border-color:rgba(232,178,58,.2)}
 .forge input:focus,.forge textarea:focus{outline:none;border-color:var(--brass)}
 .forge-out{white-space:pre-wrap;word-break:break-all;font-family:var(--f-mono);font-size:.68rem;background:#08080C;border:1px solid var(--line);border-radius:var(--r-s);padding:12px;max-height:280px;overflow:auto;color:var(--jade);margin-top:10px}
 
+
+/* ── Filmographie & biographie ─────────────────────────────────── */
+.bio{font-size:.95rem;line-height:1.75;color:#CFCFD8;max-width:66ch}
+.bio.clamped{display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical;overflow:hidden}
+.linkish{display:inline-block;font-family:var(--f-mono);font-size:.7rem;color:var(--brass);border:1px solid rgba(232,178,58,.35);padding:5px 10px;border-radius:5px;margin-top:8px;transition:.2s}
+.linkish:hover{background:rgba(232,178,58,.14)}
+.filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 6px;align-items:center}
+.filter-bar input{flex:1 1 200px;background:rgba(0,0,0,.5);border:1px solid var(--line);border-radius:var(--r-s);padding:8px 12px;font-size:.82rem}
+.filter-bar input:focus{outline:none;border-color:var(--line-2)}
+.filmo{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.filmo-row{display:grid;grid-template-columns:58px minmax(0,1fr) auto;gap:12px;align-items:baseline;padding:11px 6px;border-bottom:1px solid rgba(255,255,255,.05);text-align:left;transition:background .18s}
+.filmo-row:hover{background:rgba(255,255,255,.045)}
+.filmo-row .fy{font-family:var(--f-mono);font-size:.74rem;color:var(--ash-dim)}
+.filmo-row .ft{font-size:.88rem;font-weight:600;min-width:0}
+.filmo-row .ft em{display:block;font-style:normal;font-weight:400;font-size:.75rem;color:var(--ash);margin-top:3px}
+.filmo-row .fk{font-family:var(--f-mono);font-size:.58rem;color:var(--ash-dim);letter-spacing:.12em;text-transform:uppercase}
+.filmo-row:hover .ft{color:var(--brass)}
+
+/* ── Réponse consignée au dossier ──────────────────────────────── */
+.solved{margin-top:12px;padding:12px;border:1px dashed rgba(47,184,138,.4);border-radius:var(--r-s);background:rgba(47,184,138,.05)}
+.solved .eyebrow{display:block;margin-bottom:4px}
+.solved code{display:inline-block;font-family:var(--f-mono);font-size:.82rem;letter-spacing:.1em;color:var(--jade);background:rgba(0,0,0,.45);padding:6px 10px;border-radius:5px}
+
+/* ── Victoire ──────────────────────────────────────────────────── */
+.win{position:absolute;inset:0;overflow-y:auto;display:grid;place-items:center;padding:var(--pad)}
+#winCanvas{position:absolute;inset:0;pointer-events:none;z-index:1}
+.win-card{position:relative;z-index:2;width:min(640px,100%);border:1px solid var(--brass);border-radius:var(--r-l);padding:clamp(22px,4vw,34px);text-align:center;
+  background:linear-gradient(160deg,rgba(232,178,58,.16),var(--carbon) 58%);box-shadow:0 0 100px -34px var(--brass);animation:rise .6s var(--ease)}
+.win-glyph{font-size:clamp(2.8rem,10vw,3.8rem);filter:drop-shadow(0 0 34px var(--glow))}
+.win-t{font-size:clamp(1.4rem,4.4vw,2.1rem);font-weight:700;letter-spacing:-.03em;margin-top:6px;text-wrap:balance}
+.win-s{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--brass);margin-top:10px}
+.win-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:10px;margin:24px 0 20px}
+.stat{border:1px solid var(--line);border-radius:var(--r-m);padding:12px 8px;background:rgba(0,0,0,.28)}
+.stat b{display:block;font-family:var(--f-mono);font-size:1.15rem;font-weight:600;letter-spacing:-.02em}
+.stat span{display:block;font-family:var(--f-mono);font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ash-dim);margin-top:5px}
+.win-code{font-family:var(--f-mono);font-size:.86rem;letter-spacing:.22em;color:var(--brass);border:1px dashed rgba(232,178,58,.5);border-radius:var(--r-s);padding:12px;margin-bottom:20px;word-break:break-all}
+.countdown{font-family:var(--f-mono);font-size:1.15rem;letter-spacing:.08em;color:var(--cryo);margin-top:4px}
+.win-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+
+/* Sur écran tactile, pas de survol : les libellés restent visibles */
+@media (hover:none){
+  .card-in{opacity:1;transform:none;background:linear-gradient(0deg,rgba(5,5,8,.96) 12%,rgba(5,5,8,.55) 55%,transparent)}
+  .arrow{display:none}
+}
+
+
+/* ── Mode quotidien ────────────────────────────────────────────── */
+.daily{max-width:880px;margin:0 auto;padding:10px 0 70px}
+.daily-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;flex-wrap:wrap;margin-bottom:26px}
+.daily-t{font-size:clamp(1.5rem,4.4vw,2.1rem);font-weight:700;letter-spacing:-.03em;margin-top:6px}
+.daily-t .mono{color:var(--brass);font-size:.68em}
+.daily-sub{color:var(--ash);font-size:.86rem;margin-top:9px;max-width:54ch;line-height:1.6}
+.streak{text-align:right;border:1px solid var(--line);border-radius:var(--r-m);padding:12px 16px;background:var(--slate)}
+.streak b{display:block;font-family:var(--f-mono);font-size:1.7rem;color:var(--brass);line-height:1}
+.streak span{font-family:var(--f-mono);font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ash-dim)}
+.streak em{display:block;font-style:normal;font-family:var(--f-mono);font-size:.56rem;color:var(--ash-dim);margin-top:5px}
+.hint-stack{display:flex;flex-direction:column;gap:8px;margin-bottom:22px}
+.dhint{display:grid;grid-template-columns:74px 1fr;gap:12px;padding:12px 14px;border:1px solid var(--line);border-radius:var(--r-s);background:var(--slate);font-size:.88rem;line-height:1.55;animation:pop .3s var(--ease)}
+.dhint b{font-family:var(--f-mono);font-size:.58rem;letter-spacing:.12em;color:var(--brass)}
+.dhint.locked{opacity:.4;border-style:dashed}
+.dhint.locked b{color:var(--ash-dim)}
+.dboard{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
+.drow{display:grid;grid-template-columns:50px 1fr auto;gap:12px;align-items:center;padding:12px;border:1px solid var(--line);border-left:3px solid var(--b,var(--ash-dim));border-radius:var(--r-s);background:var(--slate);animation:pop .3s var(--ease)}
+.drow.skip{opacity:.5}
+.dscore{font-family:var(--f-mono);font-size:1.25rem;font-weight:600;color:var(--b,var(--ash-dim));text-align:center}
+.dtitle{font-size:.9rem;font-weight:600;min-width:0}
+.dtitle em{font-style:normal;color:var(--ash);font-family:var(--f-mono);font-size:.74rem;margin-left:6px}
+.dband{font-family:var(--f-mono);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--b)}
+.gchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.gchip{font-family:var(--f-mono);font-size:.59rem;padding:3px 7px;border-radius:4px;border:1px solid var(--line);color:var(--ash-dim)}
+.gchip.ok{color:var(--jade);border-color:rgba(47,184,138,.4)}
+.gchip.warn{color:var(--brass);border-color:rgba(232,178,58,.4)}
+.dslot{padding:14px;border:1px dashed var(--line);border-radius:var(--r-s);text-align:center;font-family:var(--f-mono);font-size:.7rem;color:var(--ash-dim)}
+.dinput{display:flex;gap:8px;flex-wrap:wrap}
+.dinput input{flex:1 1 240px;background:rgba(0,0,0,.5);border:1px solid var(--line-2);border-radius:var(--r-s);padding:13px 15px;font-size:.92rem}
+.dinput input:focus{outline:none;border-color:var(--brass)}
+.suggest{display:flex;flex-direction:column;gap:4px;margin-top:8px}
+.sug{display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:center;padding:7px 9px;border:1px solid var(--line);border-radius:var(--r-s);background:var(--slate);text-align:left}
+.sug:hover{border-color:var(--brass);background:rgba(232,178,58,.08)}
+.sug img{width:34px;height:50px;object-fit:cover;border-radius:4px}
+.sug span{font-size:.86rem;font-weight:600}
+.sug em{display:block;font-style:normal;font-family:var(--f-mono);font-size:.66rem;color:var(--ash-dim);margin-top:2px}
+.dresult{border:1px solid var(--line-2);border-radius:var(--r-l);padding:26px;background:var(--slate);text-align:center;animation:rise .5s var(--ease)}
+.dresult.won{border-color:var(--jade);background:linear-gradient(160deg,rgba(47,184,138,.13),var(--slate) 62%)}
+.dresult.lost{border-color:var(--signal);background:linear-gradient(160deg,rgba(225,18,43,.1),var(--slate) 62%)}
+.dans{display:flex;gap:16px;align-items:center;justify-content:center;text-align:left;margin:16px 0}
+.dans img{width:92px;border-radius:var(--r-s);border:1px solid var(--line)}
+.dans h2{font-size:1.3rem;font-weight:700;letter-spacing:-.02em}
+.dans p{font-size:.76rem;margin-top:6px}
+.dgrid{font-size:1.5rem;letter-spacing:.16em;margin:18px 0}
+.dstats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:18px 0}
+.dist{display:flex;flex-direction:column;gap:5px;max-width:330px;margin:0 auto}
+.distrow{display:grid;grid-template-columns:16px 1fr;gap:8px;align-items:center;font-family:var(--f-mono);font-size:.66rem;color:var(--ash-dim)}
+.distrow i{display:block;height:16px;border-radius:3px;background:var(--jade);color:#04140d;font-style:normal;font-size:.6rem;text-align:right;padding:1px 5px;min-width:14px;line-height:14px}
+nav.tabs button.todo::after{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--brass);margin-left:6px;vertical-align:middle}
+@media(max-width:640px){.dans{flex-direction:column;text-align:center}.dstats{grid-template-columns:repeat(2,1fr)}.dhint{grid-template-columns:1fr}.drow{grid-template-columns:44px 1fr}.dband{display:none}}
+
 footer{border-top:1px solid var(--line);padding:26px var(--pad) 40px;color:var(--ash-dim);font-family:var(--f-mono);font-size:.68rem;display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between}
 footer a{color:var(--ash);text-decoration:none}
 footer a:hover{color:var(--brass)}
@@ -449,6 +546,7 @@ footer a:hover{color:var(--brass)}
   <a class="brand" href="#" onclick="App.home();return false"><b>OASIS</b><span>The Hunt</span></a>
   <nav class="tabs" id="tabs">
     <button data-view="home" aria-current="true">Accueil</button>
+    <button data-view="daily">Quotidien</button>
     <button data-view="movie">Films</button>
     <button data-view="tv">Séries</button>
     <button data-view="list">Ma liste</button>
@@ -536,7 +634,13 @@ footer a:hover{color:var(--brass)}
   <div class="rite-x"><button class="btn btn-s" onclick="UI.closeRite()">Continuer</button></div>
 </div></div>
 
+<!-- ══ VICTOIRE ══ -->
+<div class="sheet" id="sheetWin" role="dialog" aria-modal="true" aria-label="Certificat">
+  <div class="win" id="winBox"></div>
+</div>
+
 <div id="toasts" aria-live="polite"></div>
+<script src="daily-db.js" onerror="window.__dailyFail=true"></script>
 <script src="quest-config.js" onerror="window.__cfgFail=true"></script>
 
 <script>
@@ -554,7 +658,7 @@ const S = {
   seen: {}, mylist: [], muted: false,
   q: { season: '', stage: 1, stages: {}, solvedAt: [], hints: {}, probes: {},
        wrong: {}, cooldown: 0, elapsed: 0, t0: 0, done: false, name: 'Chasseur',
-       final: null, seenBands: {} }
+       final: null, seenBands: {}, answers: {}, pending: null, finishedMs: 0 }
 };
 const $ = id => document.getElementById(id);
 const el = (t, c, h) => { const n = document.createElement(t); if (c) n.className = c; if (h != null) n.innerHTML = h; return n; };
@@ -690,7 +794,8 @@ function toItem(r, forceKind) {
     year: date ? date.slice(0, 4) : '—',
     poster: TMDB.img(r.poster_path, 'w342'),
     backdrop: TMDB.img(r.backdrop_path, 'w1280'),
-    score: r.vote_average ? Math.round(r.vote_average * 10) : null,
+    rating: r.vote_average ? Math.round(r.vote_average * 10) / 10 : null,
+    votes: r.vote_count || 0,
     overview: r.overview || ''
   };
 }
@@ -805,8 +910,8 @@ function cardEl(it) {
       : `<div style="display:grid;place-items:center;height:100%;font-family:var(--f-mono);color:var(--ash-dim);font-size:.7rem;padding:12px;text-align:center">${esc(it.title)}</div>`}
     ${it.phantom ? '<span class="card-badge">anomalie</span>' : it.kind === 'tv' ? '<span class="card-badge">série</span>' : ''}
     <span class="card-in"><span class="card-t">${esc(it.title)}</span>
-      <span class="card-m"><span>${esc(it.year)}</span>${it.score ? `<span>${it.score}%</span>` : ''}</span></span>`;
-  b.onclick = () => { SFX.tap(); UI.openDetail(it, true); };
+      <span class="card-m"><span>${esc(it.year)}</span>${it.rating ? `<span title="Note moyenne des spectateurs TMDB">★ ${String(it.rating).replace('.', ',')}</span>` : ''}</span></span>`;
+  b.onclick = () => { SFX.tap(); UI.openDetail(it, !$('sheetDetail').classList.contains('open')); };
   return b;
 }
 
@@ -891,6 +996,8 @@ const App = {
     S.view = v; S.mode = (v === 'list' ? 'list' : 'home'); S.rowCursor = 0; S.hero = null;
     [...$('tabs').children].forEach(b => b.setAttribute('aria-current', String(b.dataset.view === v)));
     $('rows').innerHTML = ''; $('q').value = '';
+    $('pills').style.display = (v === 'home' || v === 'movie' || v === 'tv') ? '' : 'none';
+    if (v === 'daily') { $('hero').style.display = 'none'; S.mode = 'daily'; return Daily.render(); }
     if (v === 'list') return this.renderList();
     $('hero').style.display = '';
     this.loadNextRow().then(() => this.loadNextRow());
@@ -937,17 +1044,71 @@ const fmtRun = m => m ? `${Math.floor(m / 60)} h ${pad2(m % 60)}` : '';
 const fmtDate = d => d ? new Date(d).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
 
 /* ─── Fiches (vue plein écran) ──────────────────────────────────── */
+const Nav = {
+  lock: false, depth: 0,
+  snap() {
+    if ($('sheetWin').classList.contains('open')) return { o: 1, d: this.depth, view: 'win' };
+    if ($('sheetDetail').classList.contains('open')) return { o: 1, d: this.depth, view: 'detail', stack: S.detailStack.slice(-14) };
+    if ($('sheetDrawer').classList.contains('open')) return { o: 1, d: this.depth, view: 'drawer', tab: S.activeDrawerTab };
+    return { o: 1, d: 0, view: 'home' };
+  },
+  push() { if (this.lock) return; this.depth++; try { history.pushState(this.snap(), ''); } catch {} },
+  replace() { if (this.lock) return; try { history.replaceState(this.snap(), ''); } catch {} },
+  rewind() { if (this.depth > 0) { const d = this.depth; this.depth = 0; history.go(-d); } else UI.hardClose(); },
+  async onPop(st) {
+    this.lock = true;
+    try {
+      this.depth = st?.d || 0;
+      if ($('sheetPlayer').classList.contains('open')) UI.closePlayer();
+      if ($('rite').classList.contains('on')) UI.closeRite();
+      if (!st || !st.o || st.view === 'home') return UI.hardClose();
+      if (st.view === 'win') return UI.openWin(true);
+      if (st.view === 'drawer') { UI.hardClose(); UI.openDrawer(st.tab); return; }
+      if (st.view === 'detail') {
+        $('sheetDrawer').classList.remove('open');
+        S.detailStack = st.stack || [];
+        $('sheetDetail').classList.add('open'); document.body.classList.add('locked');
+        await UI.renderCurrent();
+      }
+    } finally { this.lock = false; }
+  }
+};
+window.addEventListener('popstate', e => Nav.onPop(e.state));
+
 const UI = {
   /* ── Navigation de fiche ── */
   async openDetail(it, fresh) {
     if (fresh) S.detailStack = [];
     S.detailStack.push(it);
-    S.seen[it.kind + it.id] = 1; Save.now();
+    if (it.kind !== 'person' && it.kind !== 'archive') { S.seen[it.kind + it.id] = 1; Save.now(); }
+    $('sheetDrawer').classList.remove('open');
     $('sheetDetail').classList.add('open'); document.body.classList.add('locked');
-    await this.renderDetail(it);
+    Nav.push();
+    await this.renderCurrent();
   },
-  back() { if (S.detailStack.length > 1) { S.detailStack.pop(); this.renderDetail(S.detailStack[S.detailStack.length - 1]); } },
-  closeDetail() { $('sheetDetail').classList.remove('open'); document.body.classList.remove('locked'); S.detailStack = []; },
+  async renderCurrent() {
+    const it = S.detailStack[S.detailStack.length - 1];
+    if (!it) return this.hardClose();
+    $('detail').scrollTop = 0;
+    if (it.kind === 'person') return this.renderPerson(it.id);
+    if (it.kind === 'archive') return this.renderArchive(it.id);
+    if (it.kind === 'phantom') { $('detail').className = 'detail'; return this.renderPhantom(Ph.get(it.id)); }
+    return this.renderDetail(it);
+  },
+  openPerson(id) { return this.openDetail({ kind: 'person', id }); },
+  async openPersonByName(name) {
+    const r = await TMDB.get('search/person', { query: name });
+    const hit = (r?.results || [])[0];
+    return hit ? this.openDetail({ kind: 'person', id: hit.id })
+               : this.openDetail({ kind: 'archive', id: name });
+  },
+  back() { if (S.detailStack.length > 1 || Nav.depth > 0) history.back(); else this.hardClose(); },
+  closeDetail() { Nav.rewind(); },
+  hardClose() {
+    $('sheetDetail').classList.remove('open'); $('sheetDrawer').classList.remove('open');
+    $('sheetWin').classList.remove('open');
+    document.body.classList.remove('locked'); S.detailStack = []; Nav.depth = 0;
+  },
 
   navBar() {
     const multi = S.detailStack.length > 1;
@@ -982,7 +1143,7 @@ const UI = {
     const chips = [
       year, cert ? `<span class="chip">${esc(cert)}</span>` : '',
       isTv ? `${d.number_of_seasons} saison${d.number_of_seasons > 1 ? 's' : ''} · ${d.number_of_episodes} ép.` : fmtRun(d.runtime),
-      d.vote_average ? `<span class="chip ok">${Math.round(d.vote_average * 10)} %</span>` : '',
+      d.vote_average ? `<span class="chip ok" title="Note moyenne des spectateurs TMDB">★ ${String(Math.round(d.vote_average * 10) / 10).replace('.', ',')} / 10${d.vote_count ? ' · ' + d.vote_count.toLocaleString('fr-FR') + ' votes' : ''}</span>` : '',
       ...(d.genres || []).slice(0, 4).map(g => `<span class="chip">${esc(g.name)}</span>`)
     ].filter(Boolean).map(c => c.startsWith('<') ? c : `<span class="chip">${esc(c)}</span>`).join('');
 
@@ -1111,32 +1272,102 @@ const UI = {
         <p class="ep-o">${esc(e.overview || 'Résumé non disponible.')}</p></div></article>`).join('');
   },
 
-  async openPerson(id) {
-    const host = $('detail'); host.scrollTop = 0; host.className = 'detail';
+  async renderPerson(id) {
+    const host = $('detail'); host.className = 'detail';
     host.innerHTML = this.navBar() + `<div class="detail-body"><div class="empty">Ouverture du dossier…</div></div>`;
-    $('sheetDetail').classList.add('open'); document.body.classList.add('locked');
     const p = await TMDB.get(`person/${id}`, { append_to_response: 'combined_credits,images' });
-    if (!p) { host.querySelector('.detail-body').innerHTML = `<div class="empty"><b>Dossier introuvable</b></div>`; return; }
-    const credits = (p.combined_credits?.cast || []).concat((p.combined_credits?.crew || []).filter(c => ['Director', 'Writer', 'Screenplay'].includes(c.job)));
-    const uniq = new Map(); credits.filter(c => c.poster_path).forEach(c => { if (!uniq.has(c.id)) uniq.set(c.id, c); });
-    const works = [...uniq.values()].sort((a, b) => (b.popularity || 0) - (a.popularity || 0)).map(c => toItem(c, c.media_type));
-    const byYear = [...works].sort((a, b) => String(b.year).localeCompare(String(a.year)));
+    if (!p) { host.querySelector('.detail-body').innerHTML = `<div class="empty"><b>Dossier introuvable</b>Ce nom ne renvoie rien dans l’index public.</div>`; return; }
+
+    const rows = [];
+    (p.combined_credits?.cast || []).forEach(c => rows.push({ ...c, role: c.character || 'Interprète' }));
+    (p.combined_credits?.crew || []).forEach(c => rows.push({ ...c, role: c.job || 'Équipe' }));
+    const seen = new Set();
+    const credits = rows.filter(c => {
+      const k = (c.media_type || 'movie') + c.id + c.role;
+      if (seen.has(k)) return false; seen.add(k); return true;
+    }).map(c => ({
+      kind: c.media_type || (c.first_air_date ? 'tv' : 'movie'), id: c.id,
+      title: c.title || c.name, role: c.role, pop: c.popularity || 0,
+      date: c.release_date || c.first_air_date || '', poster: TMDB.img(c.poster_path, 'w342'),
+      rating: c.vote_average ? Math.round(c.vote_average * 10) / 10 : null,
+      year: (c.release_date || c.first_air_date || '').slice(0, 4) || '—'
+    })).sort((a, b) => String(b.date).localeCompare(String(a.date)));
+    const known = [...credits].filter(c => c.poster).sort((a, b) => b.pop - a.pop)
+      .filter((c, i, arr) => arr.findIndex(x => x.id === c.id && x.kind === c.kind) === i).slice(0, 20);
+    const bio = p.biography || '';
+
     host.innerHTML = this.navBar() + `<div class="detail-body" style="padding-top:8px">
       <div class="layout">
         <div>
           <h1 class="detail-title" style="font-size:clamp(1.6rem,4vw,2.4rem)">${esc(p.name)}</h1>
-          <div class="chips">${[p.known_for_department, p.birthday ? 'Né(e) le ' + fmtDate(p.birthday) : '', p.place_of_birth].filter(Boolean).map(x => `<span class="chip">${esc(x)}</span>`).join('')}</div>
-          <p class="overview" style="margin-top:18px">${esc((p.biography || 'Aucune biographie disponible.').slice(0, 900))}${(p.biography || '').length > 900 ? '…' : ''}</p>
-          <div id="pWorks"></div>
+          <div class="chips">${[p.known_for_department, p.birthday ? 'Né(e) le ' + fmtDate(p.birthday) : '',
+            p.deathday ? 'Mort(e) le ' + fmtDate(p.deathday) : '', p.place_of_birth,
+            `${credits.length} crédit(s)`].filter(Boolean).map(x => `<span class="chip">${esc(x)}</span>`).join('')}</div>
+          <p class="bio clamped" id="pBio" style="margin-top:18px">${esc(bio || 'Aucune biographie disponible dans l’index français. Essayez la filmographie ci-dessous.')}</p>
+          ${bio.length > 380 ? `<button class="linkish" id="pBioMore">Lire la biographie complète</button>` : ''}
+          <div id="pKnown"></div>
+          <section class="sec">
+            <div class="sec-h"><h3>Filmographie complète</h3><span class="row-kicker" id="pCount">${credits.length} titres</span></div>
+            <div class="filter-bar">
+              <button class="pill" data-f="all" aria-pressed="true">Tout</button>
+              <button class="pill" data-f="movie" aria-pressed="false">Films</button>
+              <button class="pill" data-f="tv" aria-pressed="false">Séries</button>
+              <input id="pFilter" placeholder="Filtrer par titre, rôle ou année…" autocomplete="off">
+            </div>
+            <div class="filmo" id="pFilmo"></div>
+          </section>
         </div>
         <aside>${p.profile_path ? `<img src="${TMDB.img(p.profile_path, 'w342')}" alt="" style="width:100%;border-radius:var(--r-m);border:1px solid var(--line)">` : ''}
-          <div class="side-block" style="margin-top:12px"><h4>Filmographie</h4><p>${works.length} titre(s) référencé(s) au catalogue.</p></div></aside>
+          <div class="side-block" style="margin-top:12px"><h4>Repères</h4>
+            <p><span style="color:var(--ash-dim)">Premier crédit :</span> ${esc(credits[credits.length - 1]?.year || '—')}</p>
+            <p><span style="color:var(--ash-dim)">Dernier crédit :</span> ${esc(credits[0]?.year || '—')}</p>
+            <p><span style="color:var(--ash-dim)">Films :</span> ${credits.filter(c => c.kind === 'movie').length} · <span style="color:var(--ash-dim)">Séries :</span> ${credits.filter(c => c.kind === 'tv').length}</p>
+          </div></aside>
       </div></div>`;
-    const w = $('pWorks');
-    const s1 = el('section', 'sec'); s1.innerHTML = `<div class="sec-h"><h3>Connu(e) pour</h3><span class="row-kicker">popularité</span></div>`;
-    w.appendChild(s1); mountRail(s1, '', '', works.slice(0, 20)); s1.querySelector('.row .row-head')?.remove();
-    const s2 = el('section', 'sec'); s2.innerHTML = `<div class="sec-h"><h3>Filmographie complète</h3><span class="row-kicker">du plus récent</span></div>`;
-    w.appendChild(s2); mountRail(s2, '', '', byYear.slice(0, 40)); s2.querySelector('.row .row-head')?.remove();
+
+    if (bio.length > 380) $('pBioMore').onclick = e => {
+      const b = $('pBio'); const open = b.classList.toggle('clamped');
+      e.target.textContent = open ? 'Lire la biographie complète' : 'Réduire la biographie';
+    };
+    const k = $('pKnown');
+    if (known.length) { const sec = el('section', 'sec'); sec.innerHTML = `<div class="sec-h"><h3>Connu(e) pour</h3><span class="row-kicker">popularité</span></div>`;
+      k.appendChild(sec); mountRail(sec, '', '', known); sec.querySelector('.row .row-head')?.remove(); }
+
+    let mode = 'all';
+    const paint = () => {
+      const q = Cx.norm($('pFilter').value);
+      const list = credits.filter(c => (mode === 'all' || c.kind === mode) &&
+        (!q || Cx.norm(c.title + ' ' + c.role + ' ' + c.year).includes(q)));
+      $('pCount').textContent = `${list.length} titre(s)`;
+      $('pFilmo').innerHTML = list.map(c => `<button class="filmo-row" data-k="${c.kind}" data-i="${c.id}">
+        <span class="fy">${esc(c.year)}</span>
+        <span class="ft">${esc(c.title)}<em>${esc(c.role)}${c.rating ? ' · ★ ' + String(c.rating).replace('.', ',') : ''}</em></span>
+        <span class="fk">${c.kind === 'tv' ? 'série' : 'film'}</span></button>`).join('')
+        || `<div class="empty">Aucun crédit ne correspond à ce filtre.</div>`;
+      $('pFilmo').querySelectorAll('.filmo-row').forEach(b =>
+        b.onclick = () => this.openDetail({ kind: b.dataset.k, id: +b.dataset.i, title: b.querySelector('.ft').firstChild.textContent, year: b.querySelector('.fy').textContent }));
+    };
+    $('pFilter').addEventListener('input', paint);
+    host.querySelectorAll('.filter-bar .pill').forEach(b => b.onclick = () => {
+      host.querySelectorAll('.filter-bar .pill').forEach(x => x.setAttribute('aria-pressed', 'false'));
+      b.setAttribute('aria-pressed', 'true'); mode = b.dataset.f; paint();
+    });
+    paint();
+  },
+
+  /* Dossier d'archive : ce que renvoie un nom que l'index ne connaît pas */
+  renderArchive(name) {
+    const host = $('detail'); host.className = 'detail corrupt';
+    host.innerHTML = this.navBar() + `<div class="detail-body" style="padding-top:8px">
+      <div class="layout"><div>
+        <span class="phantom-mark">◈ dossier partiel</span>
+        <h1 class="detail-title" style="font-size:clamp(1.6rem,4vw,2.4rem);margin-top:12px">${esc(name)}</h1>
+        <div class="chips"><span class="chip">index incomplet</span><span class="chip">dernière synchronisation inconnue</span></div>
+        <p class="overview" style="margin-top:18px">Les métadonnées attachées à ce nom n’ont pas survécu à la dernière migration de l’index.
+          Le catalogue conserve la mention, pas la fiche. Les crédits associés restent consultables depuis les titres qui les citent.</p>
+        <div class="side-block" style="margin-top:22px;border-color:rgba(139,108,232,.35)"><h4>Journal de migration</h4>
+          <p style="font-family:var(--f-mono);font-size:.74rem;color:var(--violet)">entrée conservée · fiche absente<br>crédits rattachés : non résolus<br>action : aucune</p></div>
+      </div><aside></aside></div></div>`;
   },
 
   renderPhantom(p) {
@@ -1168,7 +1399,7 @@ const UI = {
       const wrap = sec.querySelector('.people');
       p.credits.forEach(c => {
         const b = el('button', 'person', `<span class="ph">${esc(c.name[0])}</span><b>${esc(c.name)}</b><span>${esc(c.role || '')}</span>`);
-        if (c.pid) b.onclick = () => this.openPerson(c.pid); else b.onclick = () => Toast.push('Aucune fiche', 'Ce nom n’existe pas au catalogue public.', '');
+        b.onclick = () => this.openPersonByName(c.name);
         wrap.appendChild(b);
       });
       $('phCredits').appendChild(sec);
@@ -1221,6 +1452,7 @@ const Save = {
       v: 3, stage: S.q.stage, stages: S.q.stages, solvedAt: S.q.solvedAt, hints: S.q.hints,
       probes: S.q.probes, elapsed: S.q.elapsed + (S.q.t0 ? Date.now() - S.q.t0 : 0),
       done: S.q.done, name: S.q.name, final: S.q.final, wrong: S.q.wrong,
+      answers: S.q.answers, finishedMs: S.q.finishedMs,
       seen: S.seen, mylist: S.mylist, muted: S.muted, seenBands: S.q.seenBands
     });
   },
@@ -1229,7 +1461,8 @@ const Save = {
     if (!d) return false;
     Object.assign(S.q, { stage: d.stage || 1, stages: d.stages || {}, solvedAt: d.solvedAt || [], hints: d.hints || {},
       probes: d.probes || {}, elapsed: d.elapsed || 0, done: !!d.done, name: d.name || 'Chasseur',
-      final: d.final || null, wrong: d.wrong || {}, seenBands: d.seenBands || {} });
+      final: d.final || null, wrong: d.wrong || {}, seenBands: d.seenBands || {},
+      answers: d.answers || {}, finishedMs: d.finishedMs || 0 });
     S.seen = d.seen || {}; S.mylist = d.mylist || []; S.muted = !!d.muted;
     return true;
   },
@@ -1254,12 +1487,12 @@ const Quest = {
     S.q.stages[1] = S.cfg.stage1;   /* la config fait toujours autorité sur l'étape ouverte */
     S.q.season = S.cfg.seasonId;
     for (let i = 1; i <= this.total(); i++) if (S.q.stages[i]) Ph.add(S.q.stages[i].phantoms);
-    S.q.t0 = Date.now();
+    S.q.t0 = S.q.done ? 0 : Date.now();
     this.paintHud();
     setInterval(() => this.tick(), 1000);
   },
 
-  elapsedMs() { return S.q.elapsed + (S.q.t0 ? Date.now() - S.q.t0 : 0); },
+  elapsedMs() { return S.q.done ? (S.q.finishedMs || S.q.elapsed) : S.q.elapsed + (S.q.t0 ? Date.now() - S.q.t0 : 0); },
   clock(ms) { const s = Math.floor(ms / 1000); return `${pad2(Math.floor(s / 3600))}:${pad2(Math.floor(s % 3600 / 60))}:${pad2(s % 60)}`; },
   score() {
     const c = S.cfg.scoring || {};
@@ -1294,7 +1527,10 @@ const Quest = {
     const st = this.stage(); const slot = $('puzzleSlot');
     if (!st || S.q.done) { this.paintRead(null); return; }
     const isTarget = st.target && st.target.h === hash;
-    if (isTarget && slot) this.mountPuzzle(slot, st);
+    if (isTarget) {
+      S.q.pending = { title: d.title || d.name || it.title, kind: it.kind, id: it.id };
+      if (slot) this.mountPuzzle(slot, st);
+    }
     /* lecture passive : bande seulement, gratuite */
     const p = await this.proximity(it.kind, d, hash);
     this.paintRead(p, isTarget);
@@ -1302,7 +1538,10 @@ const Quest = {
   onPhantom(p) {
     const st = this.stage(); const slot = $('puzzleSlot');
     if (!st || S.q.done || !slot) return;
-    if (st.target && st.target.h === 'PH:' + p.pid) this.mountPuzzle(slot, st);
+    if (st.target && st.target.h === 'PH:' + p.pid) {
+      S.q.pending = { title: p.title, kind: 'phantom', id: p.pid };
+      this.mountPuzzle(slot, st);
+    }
   },
   paintRead(p, isTarget) {
     const box = $('signalRead'); if (!box) return;
@@ -1355,7 +1594,7 @@ const Quest = {
     slot.innerHTML = `<div class="puzzle" style="--c:${st.hue || 'var(--brass)'}">
       <div class="puzzle-h"><span>◆</span> Verrou ${st.n} / ${this.total()} — ${esc(st.name)}</div>
       <div class="puzzle-q">${st.riddle || ''}</div>
-      ${st.format ? `<div class="puzzle-f">Format attendu : <code>${esc(st.format)}</code> — accents, casse et ponctuation sont ignorés.</div>` : ''}
+      <div class="puzzle-f">${(!S.cfg.hideFormat && st.format) ? `Format attendu : <code>${esc(st.format)}</code> — a` : 'Une seule ligne. A'}ccents, casse, espaces et ponctuation sont ignorés.</div>
       <div class="puzzle-in">
         <input id="pIn" placeholder="Saisissez la combinaison" autocomplete="off" spellcheck="false" ${done ? 'disabled' : ''}>
         <button class="btn btn-q" id="pGo" ${done ? 'disabled' : ''}>Ouvrir le verrou</button>
@@ -1385,7 +1624,7 @@ const Quest = {
   },
 
   async submit(raw, st) {
-    const msg = $('pMsg'); const now = Date.now();
+    const msg = $('pMsg') || { className: '', textContent: '' }; const now = Date.now();
     if (S.q.cooldown > now) { msg.className = 'puzzle-msg bad'; msg.textContent = `Verrou en sécurité. Réessayez dans ${Math.ceil((S.q.cooldown - now) / 1000)} s.`; return; }
     const v = Cx.norm(raw);
     if (!v) { msg.className = 'puzzle-msg bad'; msg.textContent = 'Saisissez une réponse.'; return; }
@@ -1404,6 +1643,7 @@ const Quest = {
     }
     /* clé correcte : on ouvre le maillon suivant */
     msg.className = 'puzzle-msg good'; msg.textContent = 'Clé valide. Ouverture du maillon…';
+    S.q.answers[st.n] = { a: v, ...(S.q.pending || {}) };
     await this.unlockFrom(st, d.key);
   },
 
@@ -1420,9 +1660,10 @@ const Quest = {
       UI.rite(next.glyph || '🗝️', `${st.name} — verrou ouvert`, `Étape ${next.n} déverrouillée : ${next.name}`, st.hue);
       setTimeout(() => { UI.closeRite(); UI.closeDetail(); UI.openDossier(); }, 2600);
     } else {
-      S.q.done = true; S.q.stage = this.total(); Save.now(); this.paintHud();
-      UI.rite('🥚', 'L’Œuf d’Or est à vous', `${this.clock(this.elapsedMs())} · ${this.score().toLocaleString('fr-FR')} points`, '#E8B23A');
-      Board.submitRun();
+      S.q.done = true; S.q.stage = this.total(); S.q.finishedMs = this.elapsedMs();
+      S.q.t0 = 0; S.q.elapsed = S.q.finishedMs;   /* le chrono s'arrête à la victoire */
+      Save.now(); this.paintHud(); Board.submitRun();
+      UI.closeDetail(); setTimeout(() => UI.openWin(), 260);
     }
   }
 };
@@ -1509,9 +1750,10 @@ const Board = {
     if (ep) fetch(ep, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ season: S.cfg.seasonId, ...r }) }).catch(() => {});
   },
   rows() {
-    const seed = (S.cfg.leaderboard?.seed || []).map(x => ({ ...x, seed: true }));
+    const seed = (S.cfg.leaderboard?.seed || []).filter(x => x.name !== S.q.name).map(x => ({ ...x, seed: true }));
+    const others = this.runs().filter(x => x.name !== S.q.name);
     const me = { name: S.q.name, ms: Quest.elapsedMs(), score: Quest.score(), keys: S.q.solvedAt.length, done: S.q.done, me: true };
-    return [...seed, ...this.runs(), me].sort((a, b) => b.score - a.score || a.ms - b.ms);
+    return [...seed, ...others, me].sort((a, b) => b.score - a.score || a.ms - b.ms);
   },
   render() {
     const rows = this.rows();
@@ -1534,12 +1776,14 @@ const Board = {
 /* ─── Tiroir : dossier / analyseur / classement / forge ─────────── */
 Object.assign(UI, {
   openDrawer(tab) {
+    const wasOpen = $('sheetDrawer').classList.contains('open');
     S.activeDrawerTab = tab || S.activeDrawerTab;
     $('sheetDrawer').classList.add('open'); document.body.classList.add('locked');
     [...$('drawerTabs').children].forEach(b => b.setAttribute('aria-selected', String(b.dataset.t === S.activeDrawerTab)));
     this.paintDrawer();
+    wasOpen ? Nav.replace() : Nav.push();
   },
-  closeDrawer() { $('sheetDrawer').classList.remove('open'); if (!$('sheetDetail').classList.contains('open')) document.body.classList.remove('locked'); },
+  closeDrawer() { Nav.rewind(); },
   openDossier() { this.openDrawer('dossier'); },
   openLb() { this.openDrawer('lb'); },
   openAnalyzer(prefill) {
@@ -1576,7 +1820,12 @@ Object.assign(UI, {
       <div class="gauge-track" style="background:linear-gradient(90deg,var(--oxide),var(--brass))">
         <i style="left:${doneN / total * 100}%"></i></div>
       <div class="gauge-scale"><span>départ</span><span>œuf d’or</span></div></div>`;
-    if (S.cfg.tagline) out += `<p style="color:var(--ash);font-size:.85rem;line-height:1.7;margin-bottom:18px">${S.cfg.tagline}</p>`;
+    if (S.q.done) out += `<div class="side-block" style="border-color:rgba(232,178,58,.4);margin-bottom:18px">
+        <h4>Chasse terminée</h4>
+        <p>Arc bouclé en <strong>${Quest.clock(Quest.elapsedMs())}</strong> pour <strong>${Quest.score().toLocaleString('fr-FR')}</strong> points.</p>
+        ${S.cfg.nextSeasonAt ? `<p style="margin-top:8px"><span style="color:var(--ash-dim)">Prochaine chasse dans</span><br><span class="countdown" id="dossierCd">${countdownTo(S.cfg.nextSeasonAt)}</span></p>` : ''}
+        <p style="margin-top:10px"><button class="btn btn-q" onclick="UI.openWin()">Revoir mon certificat</button></p></div>`;
+    else if (S.cfg.tagline) out += `<p style="color:var(--ash);font-size:.85rem;line-height:1.7;margin-bottom:18px">${S.cfg.tagline}</p>`;
     for (let i = 1; i <= total; i++) {
       const st = S.q.stages[i], meta = (S.cfg.stageMeta || [])[i - 1] || {};
       const state = S.q.done && i === total ? 'done' : i < S.q.stage ? 'done' : i === S.q.stage ? 'active' : 'locked';
@@ -1586,6 +1835,10 @@ Object.assign(UI, {
           <span class="st">${state === 'done' ? 'ouvert' : state === 'active' ? 'en cours' : 'scellé'}</span></div>
         <div class="node-b">${st ? (state === 'done' ? `<span style="color:var(--jade)">Verrou ouvert en ${Quest.clock((S.q.solvedAt.find(x => x.n === i) || {}).at || 0)}.</span> ${st.brief}` : st.brief)
           : `Contenu chiffré. Cette étape n’existe en clair nulle part tant que le verrou précédent n’est pas ouvert — pas même dans le fichier de configuration.`}</div>
+        ${state === 'done' && S.q.answers[i] ? `<div class="solved">
+            <span class="eyebrow">Cible</span>
+            ${S.q.answers[i].id ? `<button class="linkish" onclick="UI.openDetail({kind:'${S.q.answers[i].kind}',id:${typeof S.q.answers[i].id === 'number' ? S.q.answers[i].id : `'${esc(S.q.answers[i].id)}'`}},true)">${esc(S.q.answers[i].title || '—')}</button>` : `<b>${esc(S.q.answers[i].title || '—')}</b>`}
+            <span class="eyebrow" style="margin-top:10px">Réponse</span><code>${esc(S.q.answers[i].a)}</code></div>` : ''}
         ${st && state === 'active' && st.hints?.length ? `<div style="margin-top:10px" class="eyebrow">${(S.q.hints[i] || []).length} / ${st.hints.length} indice(s) utilisé(s) — révélables depuis la fiche cible</div>` : ''}
       </article>`;
     }
@@ -1630,17 +1883,85 @@ const Forge = {
         <button class="btn btn-s" id="forgeCopy">Copier quest-config.js</button>
         <button class="btn btn-s" id="forgeDl">Télécharger</button>
       </div>
-      <div class="forge-out" id="forgeOut">En attente de compilation…</div></div>`;
+      <div class="forge-out" id="forgeOut">En attente de compilation…</div>
+
+      <hr style="border:none;border-top:1px solid var(--line);margin:28px 0">
+      <p style="color:var(--ash);font-size:.84rem;line-height:1.65"><strong>Forge quotidienne.</strong> Une ligne par titre,
+      au format <code>Titre (année)</code>. La forge résout chaque titre sur TMDB, fabrique les cinq indices depuis les
+      données réelles, scelle chaque journée et complète la banque existante (${(window.DAILY_DB?.days || []).length} jour(s) déjà en place).</p>
+      <label for="forgeDaily">Titres à ajouter</label>
+      <textarea id="forgeDaily" spellcheck="false" placeholder="Blade Runner 2049 (2017)&#10;Severance (2022)&#10;Le Grand Bleu (1988)"></textarea>
+      <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
+        <button class="btn btn-q" id="forgeDailyGo">Compiler la banque quotidienne</button>
+        <button class="btn btn-s" id="forgeDailyDl">Télécharger daily-db.js</button>
+      </div>
+      <div class="forge-out" id="forgeDailyOut">En attente de compilation…</div></div>`;
   },
   wire() {
     $('forgeGo').onclick = () => this.compile();
     $('forgeCopy').onclick = () => { navigator.clipboard.writeText(this.last || '').then(() => Toast.push('Copié', 'quest-config.js dans le presse-papier', 'ok')); };
+    $('forgeDailyGo').onclick = () => this.compileDaily();
+    $('forgeDailyDl').onclick = () => {
+      const b = new Blob([this.lastDaily || ''], { type: 'text/javascript' });
+      const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'daily-db.js'; a.click();
+    };
     $('forgeDl').onclick = () => {
       const b = new Blob([this.last || ''], { type: 'text/javascript' });
       const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'quest-config.js'; a.click();
     };
   },
   rand(n) { return Cx.hex(crypto.getRandomValues(new Uint8Array(n))); },
+  async dayKey(salt, i) {
+    return crypto.subtle.importKey('raw', await crypto.subtle.digest('SHA-256', Cx.te.encode(`${salt}|day|${i}`)),
+      'AES-GCM', false, ['encrypt', 'decrypt']);
+  },
+  async compileDaily() {
+    const out = $('forgeDailyOut'); out.textContent = 'Compilation…';
+    const lines = $('forgeDaily').value.split('\n').map(x => x.trim()).filter(Boolean);
+    if (!lines.length) { out.textContent = 'Aucun titre fourni.'; return; }
+    const db = window.DAILY_DB || { salt: this.rand(16), epoch: new Date().toISOString().slice(0, 10), days: [] };
+    const days = [...db.days]; const log = [];
+    for (const line of lines) {
+      const m = line.match(/^(.*?)\s*\((\d{4})\)\s*$/);
+      const title = (m ? m[1] : line).trim(), year = m ? +m[2] : null;
+      const r = await TMDB.get('search/multi', { query: title, include_adult: false });
+      const hit = (r?.results || []).filter(x => x.media_type !== 'person')
+        .sort((a, b) => (b.popularity || 0) - (a.popularity || 0))
+        .find(x => !year || String(x.release_date || x.first_air_date || '').startsWith(String(year))) || (r?.results || [])[0];
+      if (!hit) { log.push(`✘ ${line} — introuvable`); continue; }
+      const kind = hit.media_type === 'tv' ? 'tv' : 'movie';
+      const d = await TMDB.detail(kind, hit.id);
+      if (!d) { log.push(`✘ ${line} — fiche illisible`); continue; }
+      const y = parseInt(String(d.release_date || d.first_air_date || '').slice(0, 4)) || year || 0;
+      const genres = (d.genres || []).map(g => g.name);
+      const kw = ((d.keywords?.keywords) || (d.keywords?.results) || []).map(k => k.name).slice(0, 6);
+      const dirs = kind === 'tv' ? (d.created_by || []).map(c => c.name)
+        : (d.credits?.crew || []).filter(c => c.job === 'Director').map(c => c.name);
+      const cast = ((d.credits?.cast) || (d.aggregate_credits?.cast) || []).slice(0, 2).map(c => c.name);
+      const studio = (d.production_companies || [])[0]?.name || (d.networks || [])[0]?.name || '—';
+      const nat = (d.origin_country || [])[0] || (d.production_countries || [])[0]?.iso_3166_1 || '';
+      const hints = [
+        `${kind === 'tv' ? 'Série' : 'Film'}${nat ? ' (' + nat + ')' : ''} de ${y}, ${(genres[0] || 'genre inconnu').toLowerCase()}.`,
+        kw.length ? `Thèmes récurrents : ${kw.slice(0, 3).join(', ')}.` : `Classé ${genres.join(', ') || '—'}.`,
+        `${kind === 'tv' ? 'Créée par' : 'Réalisé par'} ${dirs.join(', ') || 'un auteur non crédité'} — production ${studio}.`,
+        cast.length ? `À l’affiche : ${cast.join(' et ')}.` : `Distribution non renseignée.`,
+        kind === 'tv' ? `${d.number_of_seasons || '?'} saison(s), ${d.number_of_episodes || '?'} épisodes, note ${(d.vote_average || 0).toFixed(1)}/10.`
+                      : `${d.runtime || '?'} minutes, note ${(d.vote_average || 0).toFixed(1)}/10${kw[3] ? ', autour de « ' + kw[3] + ' »' : ''}.`
+      ];
+      const payload = { i: days.length, kind, titles: [...new Set([d.title || d.name, d.original_title || d.original_name].filter(Boolean))],
+        year: y, genres, people: [...dirs, ...cast].slice(0, 4), studio,
+        len: kind === 'tv' ? (d.number_of_seasons || 1) : (d.runtime || 0), hints };
+      const iv = crypto.getRandomValues(new Uint8Array(12));
+      const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, await this.dayKey(db.salt, days.length), Cx.te.encode(JSON.stringify(payload)));
+      const buf = new Uint8Array(12 + ct.byteLength); buf.set(iv); buf.set(new Uint8Array(ct), 12);
+      days.push(Cx.b64e(buf));
+      log.push(`✔ jour ${days.length} — ${payload.titles[0]} (${y})`);
+    }
+    this.lastDaily = `/* daily-db.js — ${days.length} jours · généré le ${new Date().toISOString().slice(0, 10)} */\n`
+      + `window.DAILY_DB = ${JSON.stringify({ schema: 1, salt: db.salt, epoch: db.epoch, count: days.length, days }, null, 2)};\n`;
+    out.textContent = log.join('\n') + `\n\n→ ${days.length} jours au total. Téléchargez le fichier et remplacez daily-db.js.`;
+    Toast.push('Banque quotidienne compilée', `${days.length} jour(s)`, 'ok');
+  },
   async compile() {
     const out = $('forgeOut'); out.textContent = 'Compilation…';
     let def; try { def = JSON.parse($('forgeSrc').value); } catch (e) { out.textContent = 'JSON invalide : ' + e.message; return; }
@@ -1689,6 +2010,343 @@ const Forge = {
   }
 };
 
+
+/* ══════════════════════════════════════════════════════════════════
+   MODE QUOTIDIEN — une énigme par jour, six essais, indices dégressifs
+   ══════════════════════════════════════════════════════════════════ */
+const normTitle = s => Cx.norm(s).replace(/^(LE|LA|LES|L|THE|UN|UNE)\s+/, '');
+
+const Daily = {
+  db: null, day: null, abs: 0, run: null, sugTimer: null, cd: null,
+
+  ready() { return !!(this.db && this.db.days?.length); },
+  midnight(d) { const x = new Date(d); x.setHours(0, 0, 0, 0); return x; },
+  absIndex() {
+    const ep = this.midnight(this.db.epoch + 'T00:00:00');
+    return Math.max(0, Math.round((this.midnight(new Date()) - ep) / 864e5));
+  },
+  async load() {
+    this.db = window.DAILY_DB || null;
+    if (!this.ready()) return false;
+    this.abs = this.absIndex();
+    const i = this.abs % this.db.count;
+    const raw = Cx.b64d(this.db.days[i]);
+    const key = await crypto.subtle.importKey('raw',
+      await crypto.subtle.digest('SHA-256', Cx.te.encode(`${this.db.salt}|day|${i}`)), 'AES-GCM', false, ['decrypt']);
+    this.day = JSON.parse(Cx.td.decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: raw.slice(0, 12) }, key, raw.slice(12))));
+    this.run = Store.get('oasis:daily:' + this.abs, { guesses: [], hints: 1, done: false, won: false });
+    return true;
+  },
+  stats() { return Store.get('oasis:daily:stats', { played: 0, wins: 0, cur: 0, max: 0, last: -1, dist: [0, 0, 0, 0, 0, 0] }); },
+  save() { Store.set('oasis:daily:' + this.abs, this.run); },
+  left() { return 6 - this.run.guesses.length; },
+
+  cat() { return this.day.cat || (this.day.kind === 'tv' ? 'Série' : 'Film'); },
+  free() { return this.day.mode === 'free'; },
+  emoji() { return { 'Film': '🎬', 'Série': '📺', 'Jeu vidéo': '🎮', 'Personnage': '🦸' }[this.cat()] || '✴️'; },
+
+  /* Squelette de la réponse : une lettre de plus à chaque erreur */
+  mask() {
+    const t = this.day.titles[0], isL = c => /[0-9A-Za-zÀ-ÖØ-öø-ÿ]/.test(c);
+    const idx = [...t].map((c, i) => isL(c) ? i : -1).filter(i => i >= 0);
+    if (!idx.length) return t;
+    const order = idx.slice().sort((a, b) => ((a * 7919 + this.abs * 131) % 997) - ((b * 7919 + this.abs * 131) % 997));
+    const wrong = this.run.guesses.filter(g => !g.win).length;
+    const cap = Math.max(1, Math.floor(idx.length * .4));
+    const shown = new Set(this.run.done ? idx : order.slice(0, Math.min(wrong, cap)));
+    return [...t].map((c, i) => isL(c) ? (shown.has(i) ? c : '·') : c).join('');
+  },
+
+  /* ── Proposition en texte libre (jeux, personnages, divers) ── */
+  compareFree(text) {
+    const g = normTitle(text), D = this.day;
+    const win = D.titles.some(t => normTitle(t) === g);
+    const near = !win && (D.near || []).some(t => normTitle(t) === g);
+    const words = w => Cx.norm(w).split(' ').filter(x => x.length > 3);
+    const shared = !win && !near && D.titles.concat(D.near || []).some(t => words(t).some(x => words(text).includes(x)));
+    return { free: true, win, title: text.trim(), year: '', kind: D.kind,
+      score: win ? 100 : near ? 68 : shared ? 42 : 6,
+      verdict: win ? 'exact' : near ? 'même univers, mauvaise cible' : shared ? 'un mot en commun' : 'hors sujet' };
+  },
+
+  /* ── Comparaison d'une proposition avec la cible du jour ── */
+  async compare(item) {
+    const d = await TMDB.detail(item.kind, item.id) || {};
+    const D = this.day;
+    const gGenres = (d.genres || []).map(g => Cx.norm(g.name));
+    const gPeople = [
+      ...((d.credits?.cast || d.aggregate_credits?.cast || []).slice(0, 8)),
+      ...((d.credits?.crew || []).filter(c => ['Director', 'Writer', 'Screenplay', 'Creator', 'Original Music Composer'].includes(c.job))),
+      ...((d.created_by) || [])
+    ].map(p => Cx.norm(p.name));
+    const gCos = (d.production_companies || []).map(c => Cx.norm(c.name));
+    const gYear = parseInt((d.release_date || d.first_air_date || '0').slice(0, 4)) || item.year | 0;
+
+    const ovG = D.genres.filter(g => gGenres.includes(Cx.norm(g))).length;
+    const ovP = D.people.filter(p => gPeople.includes(Cx.norm(p))).length;
+    const studio = gCos.some(c => c.includes(Cx.norm(D.studio)) || Cx.norm(D.studio).includes(c));
+    const dy = Math.abs(gYear - D.year);
+    const kindOk = item.kind === D.kind;
+
+    const titles = [d.title, d.name, d.original_title, d.original_name, item.title].filter(Boolean).map(normTitle);
+    const win = D.titles.some(t => titles.includes(normTitle(t)));
+
+    const score = win ? 100 : Math.round(
+      (kindOk ? 12 : 0) + 24 * (1 - Math.min(dy, 30) / 30) +
+      28 * Math.min(ovG, 2) / 2 + 24 * Math.min(ovP, 2) / 2 + (studio ? 12 : 0));
+
+    return { win, score, kindOk, dy, gYear, ovG, ovP, studio,
+      title: d.title || d.name || item.title, year: gYear || '—', poster: item.poster, kind: item.kind };
+  },
+
+  async guess(item) {
+    if (this.run.done || !this.left()) return;
+    const r = (item && item.freeText != null) ? this.compareFree(item.freeText) : await this.compare(item);
+    if (!r.title) return;
+    this.run.guesses.push(r);
+    if (r.win) { this.run.done = true; this.run.won = true; SFX.good(); }
+    else if (!this.left()) { this.run.done = true; SFX.bad(); }
+    else { this.run.hints = Math.min(5, this.run.hints + 1); SFX.ping(r.score); }
+    if (this.run.done) this.record();
+    this.save(); this.render();
+  },
+  takeHint() {
+    if (this.run.done || this.run.hints >= 5 || !this.left()) return;
+    this.run.hints++;
+    this.run.guesses.push({ skipped: true, score: 0, title: 'Indice demandé' });
+    if (!this.left()) { this.run.done = true; this.record(); }
+    this.save(); this.render(); SFX.tap();
+  },
+  record() {
+    const s = this.stats();
+    s.played++;
+    if (this.run.won) {
+      s.wins++;
+      const n = this.run.guesses.filter(g => !g.skipped).length;
+      s.dist[Math.min(5, Math.max(0, n - 1))]++;
+      s.cur = (s.last === this.abs - 1) ? s.cur + 1 : 1;
+      s.max = Math.max(s.max, s.cur);
+    } else s.cur = 0;
+    s.last = this.abs;
+    Store.set('oasis:daily:stats', s);
+  },
+
+  grid() {
+    return this.run.guesses.map(g => g.skipped ? '⬛' : g.win ? '🟩' : g.score >= 55 ? '🟨' : '🟥').join('')
+      + '⬜'.repeat(Math.max(0, 6 - this.run.guesses.length));
+  },
+  share() {
+    const n = this.run.won ? this.run.guesses.length : 'X';
+    const txt = `OASIS quotidien #${this.abs + 1} ${this.emoji()} — ${n}/6\n${this.grid()}\n${location.origin + location.pathname}#daily`;
+    navigator.share ? navigator.share({ text: txt }).catch(() => {})
+      : navigator.clipboard.writeText(txt).then(() => Toast.push('Résultat copié', 'Collez-le où vous voulez.', 'ok')).catch(() => {});
+  },
+  toMidnight() {
+    const n = new Date(); const m = new Date(n); m.setHours(24, 0, 0, 0);
+    const t = m - n, h = Math.floor(t / 36e5), mi = Math.floor(t % 36e5 / 6e4), s = Math.floor(t % 6e4 / 1000);
+    return `${pad2(h)} h ${pad2(mi)} m ${pad2(s)} s`;
+  },
+
+  /* ── Rendu ── */
+  render() {
+    const host = $('rows');
+    const D = this.day, r = this.run;
+    const st = this.stats();
+    host.innerHTML = `<section class="daily">
+      <div class="daily-head">
+        <div><div class="eyebrow">${new Date().toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })}</div>
+          <h1 class="daily-t">Énigme du jour <span class="mono">#${this.abs + 1}</span></h1>
+          <p class="daily-sub"><span class="catbadge">${this.emoji()} ${esc(this.cat())}</span>
+            À trouver en six propositions. Chaque erreur libère un indice${this.free() ? ' et une lettre' : ''}.</p></div>
+        <div class="streak"><b>${st.cur}</b><span>jour(s) d’affilée</span><em>record ${st.max}</em></div>
+      </div>
+
+      <div class="hint-stack">${D.hints.slice(0, r.hints).map((h, i) =>
+        `<div class="dhint"><b>INDICE ${i + 1}</b><span>${esc(h)}</span></div>`).join('')}
+        ${r.hints < 5 && !r.done ? `<div class="dhint locked"><b>INDICE ${r.hints + 1}</b><span>— — — — — — —</span></div>` : ''}</div>
+
+      ${this.free() ? `<div class="dmask" aria-label="Squelette de la réponse">${esc(this.mask())}</div>` : ''}
+
+      <div class="dboard">${r.guesses.map(g => this.rowHTML(g)).join('')}
+        ${!r.done ? `<div class="dslot">${this.left()} proposition(s) restante(s)</div>` : ''}</div>
+
+      ${r.done ? this.resultHTML() : `<div class="dinput">
+          <input id="dGuess" placeholder="${this.free() ? 'Tapez votre réponse…' : 'Tapez un titre de film ou de série…'}" autocomplete="off" spellcheck="false">
+          ${this.free() ? '<button class="btn btn-p" id="dGoBtn">Proposer</button>' : ''}
+          <button class="btn btn-s" id="dHintBtn" ${r.hints >= 5 ? 'disabled' : ''}>Indice (coûte un essai)</button>
+        </div><div class="suggest" id="dSuggest"></div>`}
+    </section>`;
+
+    if (!r.done) {
+      const inp = $('dGuess');
+      if (this.free()) {
+        const go = () => { const v = inp.value.trim(); if (v) { inp.value = ''; this.guess({ freeText: v }); } };
+        $('dGoBtn').onclick = go;
+        inp.addEventListener('keydown', e => { if (e.key === 'Enter') go(); });
+      } else {
+        inp.addEventListener('input', () => { clearTimeout(this.sugTimer); this.sugTimer = setTimeout(() => this.suggest(inp.value), 260); });
+        inp.addEventListener('keydown', e => { if (e.key === 'Enter') { const f = $('dSuggest').querySelector('.sug'); if (f) f.click(); } });
+      }
+      $('dHintBtn').onclick = () => this.takeHint();
+      inp.focus();
+    } else {
+      $('dShare').onclick = () => this.share();
+      if (this.free()) return;
+      clearInterval(this.cd);
+      this.cd = setInterval(() => { const e = $('dCd'); if (!e) return clearInterval(this.cd); e.textContent = this.toMidnight(); }, 1000);
+      this.poster();
+    }
+  },
+  rowHTML(g) {
+    if (g.skipped) return `<div class="drow skip"><span class="dscore">—</span><span class="dtitle">Indice demandé</span></div>`;
+    const bd = band(g.score);
+    if (g.free) return `<div class="drow" style="--b:${bd[2]}"><span class="dscore">${g.score}</span>
+      <span class="dtitle">${esc(g.title)}<span class="gchips"><span class="gchip ${g.win ? 'ok' : g.score > 50 ? 'warn' : ''}">${esc(g.verdict)}</span></span></span>
+      <span class="dband">${bd[1]}</span></div>`;
+    return `<div class="drow" style="--b:${bd[2]}">
+      <span class="dscore">${g.score}</span>
+      <span class="dtitle">${esc(g.title)} <em>${esc(String(g.year))}</em>
+        <span class="gchips">
+          <span class="gchip ${g.kindOk ? 'ok' : ''}">${g.kind === 'tv' ? 'série' : 'film'}</span>
+          <span class="gchip ${g.dy === 0 ? 'ok' : g.dy <= 5 ? 'warn' : ''}">${g.dy === 0 ? 'même année' : g.dy + ' an(s) d’écart'}</span>
+          <span class="gchip ${g.ovG ? 'ok' : ''}">${g.ovG} genre(s)</span>
+          <span class="gchip ${g.ovP ? 'ok' : ''}">${g.ovP ? g.ovP + ' nom(s) en commun' : 'équipe différente'}</span>
+          ${g.studio ? '<span class="gchip ok">même studio</span>' : ''}
+        </span></span>
+      <span class="dband">${bd[1]}</span></div>`;
+  },
+  resultHTML() {
+    const s = this.stats(), D = this.day, r = this.run;
+    const max = Math.max(1, ...s.dist);
+    return `<div class="dresult ${r.won ? 'won' : 'lost'}">
+      <div class="eyebrow">${r.won ? `Trouvé en ${r.guesses.length} proposition(s)` : 'Raté pour aujourd’hui'}</div>
+      <div class="dans"><img id="dPoster" alt="" hidden><div>
+        <h2>${esc(D.titles[0])}</h2>
+        <p class="mono">${this.emoji()} ${esc(this.cat())} · ${D.year} · ${esc(D.genres.join(', '))}</p>
+        <p class="mono" style="color:var(--ash-dim)">${esc(D.people.join(' · '))}${D.studio && D.studio !== '—' ? ' · ' + esc(D.studio) : ''}</p></div></div>
+      ${D.trivia ? `<div class="trivia"><b>Le saviez-vous</b><p>${esc(D.trivia)}</p></div>` : ''}
+      <div class="dgrid">${this.grid()}</div>
+      <div class="dstats">
+        <div class="stat"><b>${s.played}</b><span>parties</span></div>
+        <div class="stat"><b>${s.played ? Math.round(s.wins / s.played * 100) : 0} %</b><span>réussite</span></div>
+        <div class="stat"><b>${s.cur}</b><span>série</span></div>
+        <div class="stat"><b>${s.max}</b><span>record</span></div>
+      </div>
+      <div class="dist">${s.dist.map((v, i) => `<div class="distrow"><span>${i + 1}</span>
+        <i style="width:${Math.max(4, v / max * 100)}%">${v || ''}</i></div>`).join('')}</div>
+      <div class="win-actions">
+        <button class="btn btn-q" id="dShare">Partager mon résultat</button>
+        <button class="btn btn-s" onclick="App.setView('home')">Retour au catalogue</button>
+      </div>
+      <div class="eyebrow" style="margin-top:18px">Prochaine énigme dans</div>
+      <div class="countdown" id="dCd">${this.toMidnight()}</div>
+    </div>`;
+  },
+  async poster() {
+    const r = await TMDB.get(`search/${this.day.kind}`, { query: this.day.titles[0], year: this.day.year, first_air_date_year: this.day.year });
+    const hit = (r?.results || [])[0]; const el2 = $('dPoster');
+    if (hit?.poster_path && el2) { el2.src = TMDB.img(hit.poster_path, 'w185'); el2.hidden = false; }
+  },
+  async suggest(q) {
+    const box = $('dSuggest'); if (!box) return;
+    if (q.trim().length < 2) { box.innerHTML = ''; return; }
+    const r = await TMDB.get('search/multi', { query: q.trim(), include_adult: false });
+    const list = (r?.results || []).filter(x => x.media_type !== 'person' && x.poster_path).slice(0, 6).map(x => toItem(x));
+    box.innerHTML = list.map((it, i) => `<button class="sug" data-i="${i}">
+      <img src="${it.poster}" alt="" loading="lazy"><span>${esc(it.title)}<em>${esc(it.year)} · ${it.kind === 'tv' ? 'série' : 'film'}</em></span></button>`).join('');
+    box.querySelectorAll('.sug').forEach(b => b.onclick = async () => {
+      box.innerHTML = ''; $('dGuess').value = '';
+      await this.guess(list[+b.dataset.i]);
+    });
+  }
+};
+
+/* ─── Compte à rebours & écran de victoire ──────────────────────── */
+function countdownTo(iso) {
+  const t = new Date(iso).getTime() - Date.now();
+  if (isNaN(t)) return '—';
+  if (t <= 0) return 'ouverte';
+  const d = Math.floor(t / 864e5), h = Math.floor(t % 864e5 / 36e5), m = Math.floor(t % 36e5 / 6e4), sec = Math.floor(t % 6e4 / 1000);
+  return `${d} j ${pad2(h)} h ${pad2(m)} m ${pad2(sec)} s`;
+}
+
+Object.assign(UI, {
+  openWin(silent) {
+    $('sheetWin').classList.add('open'); document.body.classList.add('locked');
+    if (!silent) Nav.push();
+    this.paintWin();
+    if (!silent) { SFX.key(); this.celebrate(); }
+    clearInterval(this._cd);
+    this._cd = setInterval(() => {
+      const a = $('winCd'), b = $('dossierCd');
+      if (!a && !b) return clearInterval(this._cd);
+      const v = countdownTo(S.cfg.nextSeasonAt);
+      if (a) a.textContent = v; if (b) b.textContent = v;
+    }, 1000);
+  },
+  closeWin() { clearInterval(this._cd); Nav.rewind(); },
+  winSummary() {
+    const keys = Object.keys(S.q.answers).length;
+    const probes = Object.values(S.q.probes).reduce((a, b) => a + b.length, 0);
+    const hints = Object.values(S.q.hints).reduce((a, b) => a + b.length, 0);
+    const wrong = Object.values(S.q.wrong).reduce((a, b) => a + b, 0);
+    return { keys, probes, hints, wrong, ms: Quest.elapsedMs(), score: Quest.score() };
+  },
+  paintWin() {
+    const w = this.winSummary(), f = S.q.final || {};
+    $('winBox').innerHTML = `<canvas id="winCanvas"></canvas>
+      <div class="win-card">
+        <div class="win-glyph">🥚</div>
+        <div class="win-t">${esc(f.title || 'L’Œuf d’Or est à vous')}</div>
+        <div class="win-s">${esc(S.cfg.seasonTitle)} — arc bouclé</div>
+        <p style="color:#CFCFD8;font-size:.9rem;line-height:1.7;margin-top:16px">${f.text || ''}</p>
+        <div class="win-stats">
+          <div class="stat"><b>${Quest.clock(w.ms)}</b><span>temps</span></div>
+          <div class="stat"><b>${w.score.toLocaleString('fr-FR')}</b><span>points</span></div>
+          <div class="stat"><b>${w.keys} / ${Quest.total()}</b><span>verrous</span></div>
+          <div class="stat"><b>${w.probes}</b><span>sondages</span></div>
+          <div class="stat"><b>${w.hints}</b><span>indices</span></div>
+          <div class="stat"><b>${w.wrong}</b><span>erreurs</span></div>
+        </div>
+        ${f.code ? `<div class="win-code">${esc(f.code)}</div>` : ''}
+        ${S.cfg.nextSeasonAt ? `<div class="eyebrow">Prochaine chasse dans</div>
+          <div class="countdown" id="winCd">${countdownTo(S.cfg.nextSeasonAt)}</div>` : ''}
+        <div class="win-actions">
+          <button class="btn btn-q" onclick="UI.shareRun()">Copier mon résultat</button>
+          <button class="btn btn-s" onclick="UI.closeWin();UI.openDossier()">Voir le dossier</button>
+          <button class="btn btn-s" onclick="UI.closeWin()">Retour au catalogue</button>
+        </div>
+      </div>`;
+  },
+  shareRun() {
+    const w = this.winSummary();
+    const grid = Array.from({ length: Quest.total() }, (_, i) => (S.q.wrong[i + 1] || 0) === 0 ? '🟩' : (S.q.wrong[i + 1] < 3 ? '🟨' : '🟥')).join('');
+    const txt = `OASIS — ${S.cfg.seasonTitle}\n${grid}  ${Quest.clock(w.ms)} · ${w.score.toLocaleString('fr-FR')} pts\n${w.hints} indice(s) · ${w.probes} sondage(s)\n${S.cfg.shareUrl || location.href}`;
+    (navigator.share ? navigator.share({ text: txt }).catch(() => {}) : navigator.clipboard.writeText(txt).then(() => Toast.push('Résultat copié', 'Collez-le où vous voulez.', 'ok')).catch(() => {}));
+  },
+  celebrate() {
+    const c = $('winCanvas'); if (!c || window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+    const ctx = c.getContext && c.getContext('2d'); if (!ctx) return;
+    const box = c.parentElement.getBoundingClientRect();
+    c.width = box.width; c.height = box.height;
+    const cols = ['#E8B23A', '#C36A2D', '#2FB88A', '#5AC8FA', '#FFFFFF'];
+    const P = Array.from({ length: 130 }, () => ({
+      x: c.width / 2 + (Math.random() - .5) * 120, y: c.height / 2,
+      vx: (Math.random() - .5) * 11, vy: -Math.random() * 13 - 3,
+      r: 2 + Math.random() * 4, c: cols[Math.random() * cols.length | 0], a: 1, rot: Math.random() * 6
+    }));
+    let n = 0;
+    (function loop() {
+      ctx.clearRect(0, 0, c.width, c.height);
+      P.forEach(p => { p.x += p.vx; p.y += p.vy; p.vy += .32; p.vx *= .995; p.a -= .0075; p.rot += .12;
+        if (p.a <= 0) return;
+        ctx.save(); ctx.globalAlpha = Math.max(0, p.a); ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+        ctx.fillStyle = p.c; ctx.fillRect(-p.r, -p.r / 2, p.r * 2, p.r); ctx.restore(); });
+      if (++n < 190) requestAnimationFrame(loop); else ctx.clearRect(0, 0, c.width, c.height);
+    })();
+  }
+});
+
 /* ─── Démarrage ─────────────────────────────────────────────────── */
 const FALLBACK_KEY = '12ec990be5e1a68af09d09c8ca76fa57';
 const BOOT_LINES = [
@@ -1717,11 +2375,18 @@ async function boot() {
     Quest.init();
   }
   await TMDB.genres();
+  try {
+    if (await Daily.load()) {
+      const tab = $('tabs').querySelector('[data-view="daily"]');
+      if (tab && !Daily.run.done) tab.classList.add('todo');
+    } else $('tabs').querySelector('[data-view="daily"]')?.remove();
+  } catch (e) { console.warn('quotidien indisponible', e); $('tabs').querySelector('[data-view="daily"]')?.remove(); }
   buildPills();
   await App.loadNextRow(); await App.loadNextRow();
+  Nav.replace();
   clearInterval(iv); bar.style.width = '100%';
   setTimeout(() => { $('boot').classList.add('gone'); setTimeout(() => $('boot').remove(), 600); }, 500);
-  App.loadNextRow();
+  if (location.hash === '#daily' && Daily.ready()) App.setView('daily'); else App.loadNextRow();
 }
 
 function buildPills() {
@@ -1759,11 +2424,15 @@ $('q').addEventListener('input', e => {
   clearTimeout(sTimer); const v = e.target.value.trim();
   sTimer = setTimeout(() => { if (v.length < 2) { if (S.mode === 'search') App.setView(S.view); } else App.search(v); }, 320);
 });
-document.querySelectorAll('.sheet').forEach(sh => sh.addEventListener('click', e => { if (e.target === sh) { sh.classList.remove('open'); document.body.classList.remove('locked'); } }));
+document.querySelectorAll('.sheet').forEach(sh => sh.addEventListener('click', e => {
+  if (e.target !== sh) return;
+  if (sh.id === 'sheetPlayer') UI.closePlayer(); else Nav.rewind();
+}));
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
     if ($('rite').classList.contains('on')) return UI.closeRite();
     if ($('sheetPlayer').classList.contains('open')) return UI.closePlayer();
+    if ($('sheetWin').classList.contains('open')) return UI.closeWin();
     if ($('sheetDrawer').classList.contains('open')) return UI.closeDrawer();
     if ($('sheetDetail').classList.contains('open')) return UI.closeDetail();
   }
